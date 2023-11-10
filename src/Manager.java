@@ -1,13 +1,12 @@
 import java.io.File;
 import java.io.IOException;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Manager <T extends Manageable>{
     Scanner sc = new Scanner(System.in);
     public ArrayList <T> mList = new ArrayList<>();
-
+    ArrayList<Music> playList = new ArrayList<>();
     public void readAll(String filename, Factory<T> fac) {
         Scanner filein = openFile(filename);
         while (filein.hasNext()) {
@@ -54,5 +53,28 @@ public class Manager <T extends Manageable>{
                 return t;
         }
         return null;
+    }
+    public void printPlayList() {
+        for (Music m : playList){
+            m.print();
+        }
+    }
+    public void addPlaylist() {
+        System.out.print("플레이리스트에 추가할 노래의 번호를 입력해주세요 : ");
+        String id = sc.next();
+        for (T t : mList){
+            if (t.matches(id)){
+                playList.add((Music)t);
+            }
+        }
+    }
+    public void deletePlayList() {
+        System.out.print("플레이리스트에서 삭제할 노래의 번호를 입력해주세요 : ");
+        String id = sc.next();
+        for (T t : mList){
+            if (t.matches(id)){
+                playList.remove((Music)t);
+            }
+        }
     }
 }
