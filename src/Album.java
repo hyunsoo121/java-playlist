@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Album implements Manageable{
+public class Album implements Manageable {
     String albumTitle;
     String artistName;
     String releaseDate;
@@ -44,7 +44,7 @@ public class Album implements Manageable{
 
     @Override
     public boolean matches(String kwd) {
-        if (albumTitle.equals(kwd))
+        if (albumTitle.contains(kwd))
             return true;
         return false;
     }

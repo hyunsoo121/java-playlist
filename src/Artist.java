@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Artist implements Manageable{
+public class Artist implements Manageable {
     String name;
     String debutDate;
     String type;
@@ -9,6 +9,7 @@ public class Artist implements Manageable{
 
     ArrayList<Album> albumList = new ArrayList<>();
     ArrayList<Music> musicList = new ArrayList<>();
+
     @Override
     public void read(Scanner sc) {
         name = "";
@@ -31,7 +32,7 @@ public class Artist implements Manageable{
 
     @Override
     public boolean matches(String kwd) {
-        if (name.equals(kwd))
+        if (name.contains(kwd))
             return true;
         return false;
     }

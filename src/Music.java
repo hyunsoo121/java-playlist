@@ -1,14 +1,13 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Music implements Manageable{
+public class Music implements Manageable {
     static int num = 0;
     int id = 0;
     String title;
     String name;
     String albumTitle;
     int views = 0;
-
 
     @Override
     public void read(Scanner sc) {
@@ -29,14 +28,14 @@ public class Music implements Manageable{
 
     @Override
     public void print() {
-        System.out.printf("[%d] 제목: %s 가수명: %s 앨범명: %s 재생수: %d\n",id, title, name, albumTitle, views);
+        System.out.printf("[%d] 제목: %s 가수명: %s 앨범명: %s 재생수: %d\n", id, title, name, albumTitle, views);
     }
 
     @Override
     public boolean matches(String kwd) {
-        if (title.equals(kwd))
+        if (title.contains(kwd))
             return true;
-        else if ((id+"").equals(kwd))
+        else if ((id + "").equals(kwd))
             return true;
         return false;
     }
