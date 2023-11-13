@@ -63,8 +63,9 @@ public class Manager<T extends Manageable> {
         System.out.print("플레이리스트에 추가할 노래의 번호를 입력해주세요 : ");
         String id = sc.next();
         for (T t : mList) {
-            if (t.matches(id)) {
-                playList.add((Music) t);
+            Music m = (Music)t;
+            if (m.matchesId(id)) {
+                playList.add(m);
             }
         }
     }
@@ -73,9 +74,11 @@ public class Manager<T extends Manageable> {
         System.out.print("플레이리스트에서 삭제할 노래의 번호를 입력해주세요 : ");
         String id = sc.next();
         for (T t : mList) {
-            if (t.matches(id)) {
-                playList.remove((Music) t);
+            Music m = (Music)t;
+            if (m.matchesId(id)) {
+                playList.remove(m);
             }
         }
+
     }
 }

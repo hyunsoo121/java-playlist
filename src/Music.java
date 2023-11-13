@@ -35,7 +35,11 @@ public class Music implements Manageable {
     public boolean matches(String kwd) {
         if (title.contains(kwd))
             return true;
-        else if ((id + "").equals(kwd))
+        return false;
+    }
+
+    public boolean matchesId(String id) {
+        if((this.id + "").equals(id))
             return true;
         return false;
     }
