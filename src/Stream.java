@@ -1,10 +1,13 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Stream {
     Scanner sc = new Scanner(System.in);
-    Manager<Music> musicMgr = new Manager<>();
+    static Manager<Music> musicMgr = new Manager<>();
     static Manager<Artist> artistMgr = new Manager<>();
     static Manager<Album> albumMgr = new Manager<>();
+
+    ArrayList<User> uList = new ArrayList<>();
 
     void run() {
         artistMgr.readAll("artist.txt", new Factory<Artist>() {
@@ -27,13 +30,20 @@ public class Stream {
                 return new Music();
             }
         });
+        signup();
         menu();
+    }
+
+    private void signup() {
+        User user = new User();
+        user.signup();
+        uList.add(user);
     }
 
     private void menu() {
         int num;
         while (true) {
-            System.out.print("(1)출력 (2)검색 (3)플레이리스트 (기타)종료 ");
+            System.out.print("(1)출력 (2)검색 (3)나의 플레이리스트 (기타)종료 ");
             num = sc.nextInt();
             if (num < 1 || num > 3)
                 break;
@@ -105,21 +115,56 @@ public class Stream {
     private void playListMenu() {
         int num;
         while (true) {
-            System.out.print("(1)플레이리스트 출력  (2)플레이리스트에 추가 (3)플레이리스트에서 삭제 (기타) 종료 ");
+            User user;
+            System.out.print("(1)플레이리스트 출력 (2)플레이리스트에 추가 (3)플레이리스트에서 삭제 (기타)종료 ");
             num = sc.nextInt();
             if (num < 1 || num > 3)
                 break;
             switch (num) {
                 case 1:
-                    musicMgr.printPlayList();
+                    user = findUser();
+                    if (user == null){
+                        System.out.print("해당 유저가 없습니다.\n");
+                        break;
+                    }
+                    user.printPlayList();
                     break;
                 case 2:
-                    musicMgr.printAll();
-                    musicMgr.addPlaylist();
-                    break;
+                    int pn;
+                    String name;
+                    user = findUser();
+                    if (user == null){
+                        System.out.print("해당 유저가 없습니다.\n");
+                        break;
+                    }
+                    System.out.print("(1)새로운 플레이리스트에 추가 (2)기존 플레이리스트에 추가 (기타)종료 ");
+                    pn = sc.nextInt();
+                    if (pn<1 || pn>2){
+                        break;
+                    }
+                    else if (pn == 1){
+                        System.out.print("생성할 플레이리스트의 이름을 입력해주세요>>");
+                        name = sc.next();
+                        user.createPlayList(name);
+                        user.addPlaylist(musicMgr);
+                        break;
+                    }
+                    else {
+                        if (user.isPlayListEmpty()){
+                            System.out.println("기존의 플레이리스트가 없습니다.");
+                            break;
+                        }
+                        user.addPlaylist(musicMgr);
+                        break;
+                    }
+
                 case 3:
-                    musicMgr.printPlayList();
-                    musicMgr.deletePlayList();
+                    user = findUser();
+                    if (user == null){
+                        System.out.print("해당 유저가 없습니다.\n");
+                        break;
+                    }
+                    user.deletePlayList();
                     break;
                 default:
                     break;
@@ -127,6 +172,18 @@ public class Stream {
         }
 
     }
+
+
+    private User findUser() {
+        User user = null;
+        System.out.print("아이디를 입력하세요 : ");
+        String name = sc.next();
+        for (User u : uList){
+            user = u.findUser(name);
+        }
+        return user;
+    }
+
 
     public static void main(String[] args) {
         Stream stream = new Stream();

@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class Manager<T extends Manageable> {
     Scanner sc = new Scanner(System.in);
     public ArrayList<T> mList = new ArrayList<>();
-    ArrayList<Music> playList = new ArrayList<>();
+    ArrayList<Music> musicList = new ArrayList<>();
 
     public void readAll(String filename, Factory<T> fac) {
         Scanner filein = openFile(filename);
@@ -53,32 +53,42 @@ public class Manager<T extends Manageable> {
         return null;
     }
 
-    public void printPlayList() {
-        for (Music m : playList) {
-            m.print();
-        }
-    }
+//    public void printPlayList() {
+//        for (T t : mList) {
+//            t.print();
+//        }
+//    }
 
-    public void addPlaylist() {
-        System.out.print("플레이리스트에 추가할 노래의 번호를 입력해주세요 : ");
-        String id = sc.next();
-        for (T t : mList) {
+//    public void addPlaylist() {
+//        System.out.print("플레이리스트에 추가할 노래의 번호를 입력해주세요 : ");
+//        String id = sc.next();
+//        for (T t : mList) {
+//            Music m = (Music)t;
+//            if (m.matchesId(id)) {
+//                mList.add(m);
+//            }
+//        }
+//    }
+
+//    public void deletePlayList() {
+//        System.out.print("플레이리스트에서 삭제할 노래의 번호를 입력해주세요 : ");
+//        String id = sc.next();
+//        for (T t : mList) {
+//            Music m = (Music)t;
+//            if (m.matchesId(id)) {
+//                mList.remove(m);
+//            }
+//        }
+//
+//    }
+
+    public Music findMusic(int n) {
+        for (T t : mList){
             Music m = (Music)t;
-            if (m.matchesId(id)) {
-                playList.add(m);
+            if (m.matchesId(String.valueOf(n))){
+                return m;
             }
         }
-    }
-
-    public void deletePlayList() {
-        System.out.print("플레이리스트에서 삭제할 노래의 번호를 입력해주세요 : ");
-        String id = sc.next();
-        for (T t : mList) {
-            Music m = (Music)t;
-            if (m.matchesId(id)) {
-                playList.remove(m);
-            }
-        }
-
+        return null;
     }
 }

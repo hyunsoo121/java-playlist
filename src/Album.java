@@ -6,6 +6,7 @@ public class Album implements Manageable {
     String artistName;
     String releaseDate;
     String genre;
+    String albumImage;
 
     ArrayList<Music> musicList = new ArrayList<>();
 
