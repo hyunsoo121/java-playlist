@@ -59,6 +59,7 @@ public class Stream {
                 System.out.format("%s 번호로 회원가입을 진행합니다.\n", tel);
                 user.signUp(tel);
                 userMgr.mList.add(user);
+                currentUser = user;
             }
             menu();
         }
