@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Manager<T extends Manageable> {
-    Scanner sc = new Scanner(System.in);
     public ArrayList<T> mList = new ArrayList<>();
-    ArrayList<Music> musicList = new ArrayList<>();
+    Scanner sc = new Scanner(System.in);
 
     public void readAll(String filename, Factory<T> fac) {
         Scanner filein = openFile(filename);
@@ -81,14 +80,4 @@ public class Manager<T extends Manageable> {
 //        }
 //
 //    }
-
-    public Music findMusic(int n) {
-        for (T t : mList){
-            Music m = (Music)t;
-            if (m.matchesId(String.valueOf(n))){
-                return m;
-            }
-        }
-        return null;
-    }
 }

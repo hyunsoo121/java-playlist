@@ -1,122 +1,99 @@
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 import java.util.Scanner;
 
-public class User{
+public class User implements Manageable {
     Scanner sc = new Scanner(System.in);
     String id;
     String name;
     String tel;
-    Map<String, Playlist> playlists;
+    ArrayList<Playlist> library;
 
+    @Override
+    public void read(Scanner sc) {
+        tel = sc.next();
+        id = sc.next();
+        name = sc.next();
+        library = new ArrayList<>();
+    }
 
-    public void signup() {
-        System.out.print("아이디 : ");
-        this.id = sc.nextLine();
-        System.out.print("이름 : ");
-        this.name = sc.nextLine();
-        System.out.print("전화번호(010-2222-2222) : ");
-        this.tel = sc.nextLine();
-        this.playlists = new HashMap<>();
+    @Override
+    public void print() {
+        System.out.printf("사용자: %s 전화번호: %s 아이디: %s\n",
+                name, tel, id);
     }
 
     public boolean matches(String kwd) {
-        return this.name.equals(kwd);
+        if (tel.equals(kwd)) {
+            return true;
+        } else {
+            return name.equals(kwd);
+        }
     }
 
-    public User findUser(String name) {
-        if (matches(name)){
-            return this;
+    public void signUp(String tel) {
+        String combined = tel + " ";
+        System.out.print("아이디 : ");
+        combined += sc.next() + " ";
+        System.out.print("이름 : ");
+        combined += sc.next() + " ";
+        Scanner signInfo = new Scanner(combined);
+        read(signInfo);
+        signInfo.close();
+    }
+
+    public void printLibrary() {
+        System.out.format("%s님의 전체 플레이리스트 목록(%d개)\n", name, library.size());
+        for (Playlist p : library) {
+            p.print();
+            p.printDetails();
+        }
+    }
+
+    public void addToLibrary() {
+        Playlist list = new Playlist();
+        System.out.print("플레이리스트 제목을 입력하세요 : ");
+        String title = sc.next();
+        if (searchLibrary(title) != null) {
+            System.out.print("이미 존재하는 제목입니다. 다시 시도해주세요.");
+        }
+        list.create(title);
+        library.add(list);
+    }
+
+    public void deleteFromLibrary(Playlist p) {
+        library.remove(p);
+    }
+
+    public Playlist searchLibrary(String kwd) {
+        for (Playlist p : library) {
+            if (p.matches(kwd)) return p;
         }
         return null;
     }
 
-    public void printPlayList() {
-        Playlist pl = selectPlaylist();
-        if (pl == null){
-            System.out.println("플레이리스트가 비었습니다. 노래를 먼저 추가해주세요.");
-            return;
-        }
-        for (Music m : pl.songs){
-            m.print();
+    public void addMusic(Playlist p) {
+        System.out.print("추가할 음악(제목, 번호 등) : ");
+        String title = sc.next();
+        Music music = findMusic(title);
+        if (music != null) {
+            p.add(music);
         }
     }
 
-    public void addPlaylist(Manager<Music> musicMgr) {
-        int n;
-        Playlist pl = selectPlaylist();
-        musicMgr.printAll();
-        System.out.print("추가할 노래의 번호를 입력하세요 : ");
-        n = sc.nextInt();
-        int listSize = Stream.musicMgr.mList.size();
-        if (n<1 || n>listSize){
-            System.out.print("잘못된 번호를 입력하셨습니다. 다시 입력해주세요.\n");
-            return ;
-        }
-        for (Music m : pl.songs){
-            if(m.id == n){
-                System.out.print("선택하신 음악이 이미 플레이리스트에 있습니다.\n");
-                return ;
-            }
-        }
-        Music m = Stream.musicMgr.findMusic(n);
-        pl.songs.add(m);
-    }
-
-    public void deletePlayList() {
-        int n;
-        Playlist pl = selectPlaylist();
-        if (pl == null) return;
-        for (Music m : pl.songs){
-            System.out.printf("<%s 플레이리스트>\n",pl.name);
-            m.print();
-        }
-        System.out.print("삭제할 노래의 번호를 입력하세요 : ");
-        n = sc.nextInt();
-        int listSize = pl.songs.size();
-        if (n < 1 || n>listSize){
-            System.out.print("잘못된 번호를 입력하셨습니다. 다시 입력해주세요.\n");
-            return ;
-        }
-        Music m = Stream.musicMgr.findMusic(n);
-        pl.songs.remove(m);
-
-    }
-
-    public void createPlayList(String name) {
-        Playlist newPlaylist = new Playlist(name);
-        int num = newPlaylist.num;
-        playlists.put(String.valueOf(num),newPlaylist);
-    }
-
-    public boolean isPlayListEmpty() {
-        return playlists.isEmpty();
-    }
-
-    public Playlist selectPlaylist() {
-        printPlaylistName();
-        if (isPlayListEmpty()){
-            System.out.println("플레이리스트가 없습니다. 플레이리스트를 먼저 만들어주세요.");
-            return null;
-        }
-        while(true){
-            int n;
-            System.out.print("플레이리스트의 번호를 입력하세요 : ");
-            n = sc.nextInt();
-            for(String key : playlists.keySet()){
-                if(key.equals(String.valueOf(n))){
-                    return playlists.get((String.valueOf(n)));
-                }
-            }
-            System.out.print("잘못된 번호를 입력하셨습니다. 다시 입력해주세요.\n");
+    public void deleteMusic(Playlist p) {
+        System.out.print("삭제할 음악(제목, 번호 등) : ");
+        String title = sc.next();
+        Music music = findMusic(title);
+        if (music != null) {
+            p.delete(music);
         }
     }
 
-    private void printPlaylistName() {
-        System.out.println("<나의 플레이리스트 목록>");
-        for(String key : playlists.keySet()) {
-            Playlist pl = playlists.get(key);
-            System.out.printf("[%s] %s\n",key,pl.name);
+    public Music findMusic(String kwd) {
+        Manager<Music> manager = Stream.musicMgr;
+        for (Music m : manager.mList) {
+            if (m.matchesId(kwd)) return m;
         }
+        return null;
     }
 }

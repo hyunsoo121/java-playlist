@@ -36,11 +36,13 @@ public class Album implements Manageable {
             artist.albumList.add(this);
         releaseDate = sc.next();
         genre = sc.next();
+        albumImage = sc.next();
     }
 
     @Override
     public void print() {
-        System.out.printf("앨범명: %s 가수명: %s 출시일: %s 장르: %s\n", albumTitle, artistName, releaseDate, genre);
+        System.out.printf("앨범명: %s 가수명: %s 출시일: %s 장르: %s 앨범이미지: %s\n",
+                albumTitle, artistName, releaseDate, genre, albumImage);
     }
 
     @Override

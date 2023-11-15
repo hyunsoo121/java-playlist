@@ -1,13 +1,18 @@
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Stream {
-    Scanner sc = new Scanner(System.in);
+    static Manager<User> userMgr = new Manager<>();
     static Manager<Music> musicMgr = new Manager<>();
     static Manager<Artist> artistMgr = new Manager<>();
     static Manager<Album> albumMgr = new Manager<>();
+    Scanner sc = new Scanner(System.in);
+    User currentUser;
 
-    ArrayList<User> uList = new ArrayList<>();
+    public static void main(String[] args) {
+        Stream stream = new Stream();
+        stream.run();
+    }
 
     void run() {
         artistMgr.readAll("artist.txt", new Factory<Artist>() {
@@ -30,20 +35,40 @@ public class Stream {
                 return new Music();
             }
         });
-        signup();
-        menu();
+        userMgr.readAll("user.txt", new Factory<User>() {
+            @Override
+            public User create() {
+                return new User();
+            }
+        });
+        sign();
     }
 
-    private void signup() {
-        User user = new User();
-        user.signup();
-        uList.add(user);
+    private void sign() {
+        while (true) {
+            User user = null;
+            System.out.print("전화번호를 입력하세요.(0 입력 시 종료) : ");
+            String tel = sc.next();
+            if (tel.equals("0")) break;
+            user = userMgr.find(tel);
+            if (user != null) {
+                currentUser = user;
+                System.out.format("%s님, 다시 만나서 반가워요.\n", user.name);
+            } else {
+                user = new User();
+                System.out.format("%s 번호로 회원가입을 진행합니다.\n", tel);
+                user.signUp(tel);
+                userMgr.mList.add(user);
+            }
+            menu();
+        }
+        System.exit(0);
     }
 
     private void menu() {
         int num;
         while (true) {
-            System.out.print("(1)출력 (2)검색 (3)나의 플레이리스트 (기타)종료 ");
+            System.out.print("(1)출력 (2)검색 (3)나의 플레이리스트 (기타)로그아웃 ");
             num = sc.nextInt();
             if (num < 1 || num > 3)
                 break;
@@ -55,7 +80,7 @@ public class Stream {
                     searchMenu();
                     break;
                 case 3:
-                    playListMenu();
+                    playlistMenu();
                     break;
                 default:
                     break;
@@ -66,7 +91,7 @@ public class Stream {
     private void printMenu() {
         int num;
         while (true) {
-            System.out.print("(1)아티스트출력 (2)앨범출력 (3)음악출력 (기타) 종료 ");
+            System.out.print("(1)아티스트출력 (2)앨범출력 (3)음악출력 (기타)종료 ");
             num = sc.nextInt();
             if (num < 1 || num > 3)
                 break;
@@ -78,7 +103,17 @@ public class Stream {
                     albumMgr.printAll();
                     break;
                 case 3:
-                    musicMgr.printAll();
+                    System.out.print("(1)인기순 정렬 (2)최신순 정렬 (기타)종료 ");
+                    int flag = sc.nextInt();
+                    if (flag == 1) {
+                        Collections.sort(musicMgr.mList, (a, b) -> b.views - a.views);
+                        musicMgr.printAll();
+                    } else if (flag == 2) {
+                        Collections.sort(musicMgr.mList, (a, b) -> b.albumInfo(1).compareTo(a.albumInfo(1)));
+                        musicMgr.printAll();
+                    } else {
+                        break;
+                    }
                     break;
                 default:
                     break;
@@ -104,7 +139,6 @@ public class Stream {
                     break;
                 case 3:
                     System.out.print("음악 입력: ");
-                    musicMgr.search();
                     break;
                 default:
                     break;
@@ -112,81 +146,44 @@ public class Stream {
         }
     }
 
-    private void playListMenu() {
+    private void playlistMenu() {
         int num;
         while (true) {
-            User user;
-            System.out.print("(1)플레이리스트 출력 (2)플레이리스트에 추가 (3)플레이리스트에서 삭제 (기타)종료 ");
+            System.out.print("(1)플레이리스트 출력 (2)플레이리스트 생성 (3)플레이리스트 수정 (기타)종료 ");
             num = sc.nextInt();
-            if (num < 1 || num > 3)
+            if ((num < 1) || (num > 3))
                 break;
             switch (num) {
                 case 1:
-                    user = findUser();
-                    if (user == null){
-                        System.out.print("해당 유저가 없습니다.\n");
-                        break;
-                    }
-                    user.printPlayList();
+                    currentUser.printLibrary();
                     break;
                 case 2:
-                    int pn;
-                    String name;
-                    user = findUser();
-                    if (user == null){
-                        System.out.print("해당 유저가 없습니다.\n");
-                        break;
-                    }
-                    System.out.print("(1)새로운 플레이리스트에 추가 (2)기존 플레이리스트에 추가 (기타)종료 ");
-                    pn = sc.nextInt();
-                    if (pn<1 || pn>2){
-                        break;
-                    }
-                    else if (pn == 1){
-                        System.out.print("생성할 플레이리스트의 이름을 입력해주세요>>");
-                        name = sc.next();
-                        user.createPlayList(name);
-                        user.addPlaylist(musicMgr);
-                        break;
-                    }
-                    else {
-                        if (user.isPlayListEmpty()){
-                            System.out.println("기존의 플레이리스트가 없습니다.");
+                    currentUser.addToLibrary();
+                    break;
+                case 3:
+                    System.out.format("수정할 플레이리스트의 제목을 입력하세요.");
+                    String kwd = sc.next();
+                    Playlist p = currentUser.searchLibrary(kwd);
+                    if (p != null) {
+                        System.out.print("(1)음악 추가 (2)음악 삭제 (3)플레이리스트 삭제 (기타)종료 ");
+                        int flag = sc.nextInt();
+                        if (flag == 1) {
+                            currentUser.addMusic(p);
+                        } else if (flag == 2) {
+                            currentUser.deleteMusic(p);
+                        } else if (flag == 3) {
+                            currentUser.deleteFromLibrary(p);
+                        } else {
                             break;
                         }
-                        user.addPlaylist(musicMgr);
-                        break;
+                    } else {
+                        System.out.format("검색 결과가 없습니다.");
                     }
-
-                case 3:
-                    user = findUser();
-                    if (user == null){
-                        System.out.print("해당 유저가 없습니다.\n");
-                        break;
-                    }
-                    user.deletePlayList();
                     break;
                 default:
                     break;
             }
         }
 
-    }
-
-
-    private User findUser() {
-        User user = null;
-        System.out.print("아이디를 입력하세요 : ");
-        String name = sc.next();
-        for (User u : uList){
-            user = u.findUser(name);
-        }
-        return user;
-    }
-
-
-    public static void main(String[] args) {
-        Stream stream = new Stream();
-        stream.run();
     }
 }
