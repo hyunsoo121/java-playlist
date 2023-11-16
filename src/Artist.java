@@ -6,6 +6,7 @@ public class Artist implements Manageable {
     String debutDate;
     String type;
     String agency;
+    String imagePath;
 
     ArrayList<Album> albumList = new ArrayList<>();
     ArrayList<Music> musicList = new ArrayList<>();
@@ -23,11 +24,13 @@ public class Artist implements Manageable {
         debutDate = sc.next();
         type = sc.next();
         agency = sc.next();
+        imagePath = sc.next();
     }
 
     @Override
     public void print() {
-        System.out.printf("가수명: %s 데뷔일자: %s 유형: %s 회사: %s\n", name, debutDate, type, agency);
+        System.out.printf("가수명: %s 데뷔일자: %s 유형: %s 회사: %s, 이미지: %s\n",
+                name, debutDate, type, agency, imagePath);
     }
 
     @Override

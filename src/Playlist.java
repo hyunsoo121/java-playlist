@@ -23,7 +23,7 @@ public class Playlist implements Manageable {
         num = ++n;
         title = sc.next();
         date = sc.next();
-        this.musicList = new ArrayList<>();
+        musicList = new ArrayList<>();
     }
 
     @Override
