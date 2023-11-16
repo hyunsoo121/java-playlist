@@ -140,6 +140,7 @@ public class Stream {
                     break;
                 case 3:
                     System.out.print("음악 입력: ");
+                    musicMgr.search();
                     break;
                 default:
                     break;

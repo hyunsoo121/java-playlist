@@ -54,10 +54,11 @@ public class User implements Manageable {
         System.out.print("플레이리스트 제목을 입력하세요 : ");
         String title = sc.next();
         if (searchLibrary(title) != null) {
-            System.out.print("이미 존재하는 제목입니다. 다시 시도해주세요.");
+            System.out.print("이미 존재하는 제목입니다. 다시 시도해주세요.\n");
+        } else {
+            list.create(title);
+            library.add(list);
         }
-        list.create(title);
-        library.add(list);
     }
 
     public void deleteFromLibrary(Playlist p) {
