@@ -6,7 +6,7 @@ public class Album implements Manageable {
     String artistName;
     String releaseDate;
     String genre;
-    String albumImage;
+    String imagePath;
 
     ArrayList<Music> musicList = new ArrayList<>();
 
@@ -32,23 +32,21 @@ public class Album implements Manageable {
             artistName += token + " "; // 문자열 name에 추가
         }
         Artist artist = (Artist) Stream.artistMgr.find(artistName);
-        if (artist != null)
-            artist.albumList.add(this);
+        if (artist != null) artist.albumList.add(this);
         releaseDate = sc.next();
         genre = sc.next();
-        albumImage = sc.next();
+        imagePath = sc.next();
     }
 
     @Override
     public void print() {
-        System.out.printf("앨범명: %s 가수명: %s 출시일: %s 장르: %s 앨범이미지: %s\n",
-                albumTitle, artistName, releaseDate, genre, albumImage);
+        System.out.format("앨범명: %s 가수명: %s 출시일: %s 장르: %s 앨범이미지: %s\n",
+                albumTitle, artistName, releaseDate, genre, imagePath);
     }
 
     @Override
     public boolean matches(String kwd) {
-        if (albumTitle.contains(kwd))
-            return true;
+        if (albumTitle.contains(kwd)) return true;
         return false;
     }
 }

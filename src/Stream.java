@@ -6,6 +6,7 @@ public class Stream {
     static Manager<Music> musicMgr = new Manager<>();
     static Manager<Artist> artistMgr = new Manager<>();
     static Manager<Album> albumMgr = new Manager<>();
+    static Manager<Playlist> playlistMgr = new Manager<>();
     Scanner sc = new Scanner(System.in);
     User currentUser;
 
@@ -39,6 +40,12 @@ public class Stream {
             @Override
             public User create() {
                 return new User();
+            }
+        });
+        playlistMgr.readAll("playlist.txt", new Factory<Playlist>() {
+            @Override
+            public Playlist create() {
+                return new Playlist();
             }
         });
         sign();
@@ -81,7 +88,7 @@ public class Stream {
                     searchMenu();
                     break;
                 case 3:
-                    playlistMenu();
+                    currentUser.userMenu();
                     break;
                 default:
                     break;
@@ -105,16 +112,9 @@ public class Stream {
                     break;
                 case 3:
                     System.out.print("(1)인기순 정렬 (2)최신순 정렬 (기타)종료 ");
-                    int flag = sc.nextInt();
-                    if (flag == 1) {
-                        Collections.sort(musicMgr.mList, (a, b) -> b.views - a.views);
-                        musicMgr.printAll();
-                    } else if (flag == 2) {
-                        Collections.sort(musicMgr.mList, (a, b) -> b.albumInfo(1).compareTo(a.albumInfo(1)));
-                        musicMgr.printAll();
-                    } else {
-                        break;
-                    }
+                    int state = sc.nextInt();
+                    sortList(state);
+                    musicMgr.printAll();
                     break;
                 default:
                     break;
@@ -148,44 +148,11 @@ public class Stream {
         }
     }
 
-    private void playlistMenu() {
-        int num;
-        while (true) {
-            System.out.print("(1)플레이리스트 출력 (2)플레이리스트 생성 (3)플레이리스트 수정 (기타)종료 ");
-            num = sc.nextInt();
-            if ((num < 1) || (num > 3))
-                break;
-            switch (num) {
-                case 1:
-                    currentUser.printLibrary();
-                    break;
-                case 2:
-                    currentUser.addToLibrary();
-                    break;
-                case 3:
-                    System.out.format("수정할 플레이리스트의 제목을 입력하세요.");
-                    String kwd = sc.next();
-                    Playlist p = currentUser.searchLibrary(kwd);
-                    if (p != null) {
-                        System.out.print("(1)음악 추가 (2)음악 삭제 (3)플레이리스트 삭제 (기타)종료 ");
-                        int flag = sc.nextInt();
-                        if (flag == 1) {
-                            currentUser.addMusic(p);
-                        } else if (flag == 2) {
-                            currentUser.deleteMusic(p);
-                        } else if (flag == 3) {
-                            currentUser.deleteFromLibrary(p);
-                        } else {
-                            break;
-                        }
-                    } else {
-                        System.out.format("검색 결과가 없습니다.");
-                    }
-                    break;
-                default:
-                    break;
-            }
+    private void sortList(int state) {
+        if (state == 1) {
+            Collections.sort(musicMgr.mList, (a, b) -> b.views - a.views); //재생수 차트
+        } else if (state == 2) {
+            Collections.sort(musicMgr.mList, (a, b) -> b.albumInfo(1).compareTo(a.albumInfo(1))); //최신순 차트
         }
-
     }
 }

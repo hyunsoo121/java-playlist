@@ -51,33 +51,4 @@ public class Manager<T extends Manageable> {
         }
         return null;
     }
-
-//    public void printPlayList() {
-//        for (T t : mList) {
-//            t.print();
-//        }
-//    }
-
-//    public void addPlaylist() {
-//        System.out.print("플레이리스트에 추가할 노래의 번호를 입력해주세요 : ");
-//        String id = sc.next();
-//        for (T t : mList) {
-//            Music m = (Music)t;
-//            if (m.matchesId(id)) {
-//                mList.add(m);
-//            }
-//        }
-//    }
-
-//    public void deletePlayList() {
-//        System.out.print("플레이리스트에서 삭제할 노래의 번호를 입력해주세요 : ");
-//        String id = sc.next();
-//        for (T t : mList) {
-//            Music m = (Music)t;
-//            if (m.matchesId(id)) {
-//                mList.remove(m);
-//            }
-//        }
-//
-//    }
 }

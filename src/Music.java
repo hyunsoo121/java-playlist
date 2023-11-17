@@ -28,7 +28,8 @@ public class Music implements Manageable {
 
     @Override
     public void print() {
-        System.out.printf("[%d] 제목: %s 가수명: %s 앨범명: %s 재생수: %d, 앨범 커버: %s\n", id, title, name, albumTitle, views, albumInfo(3));
+        System.out.printf("[%d] 제목: %s 가수명: %s 앨범명: %s 재생수: %d, 앨범 커버: %s\n",
+                id, title, name, albumTitle, views, albumInfo(3));
     }
 
     @Override
@@ -53,8 +54,16 @@ public class Music implements Manageable {
             return album.genre;
         }
         if (flag == 3) {
-            return album.albumImage;
+            return album.imagePath;
         } else return null;
+    }
+
+    public static Music findById(String kwd) {
+        Manager<Music> manager = Stream.musicMgr;
+        for (Music m : manager.mList) {
+            if (m.matchesId(kwd)) return m;
+        }
+        return null;
     }
 
 }

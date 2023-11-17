@@ -6,37 +6,51 @@ import java.util.Scanner;
 public class Playlist implements Manageable {
     static DateTimeFormatter ymdFormat = DateTimeFormatter.ofPattern("yyyy.MM.dd");
     static int n = 0;
+    Scanner sc = new Scanner(System.in);
     int num;
     String title;
     String date;
+    User user;
     ArrayList<Music> musicList;
 
-    public void create(String ttl) {
-        String combined = ttl + " ";
-        combined += LocalDate.now().format(ymdFormat);
-        Scanner playlistInfo = new Scanner(combined);
+    public void create(String tel) {
+        String combined = tel + " ";
+        System.out.format("제목을 입력하세요. : ");
+        combined += sc.next() + " ";
+        combined += LocalDate.now().format(ymdFormat) + " ";
+        Scanner playlistInfo = new Scanner(combined + "0");
         read(playlistInfo);
     }
 
     @Override
     public void read(Scanner sc) {
         num = ++n;
+        Manager<User> mgr = Stream.userMgr;
+        String tel = sc.next();
+        User u = mgr.find(tel);
+        if (u != null) {
+            user = u;
+        }
         title = sc.next();
         date = sc.next();
         musicList = new ArrayList<>();
+        user.library.add(this);
+        String musicId;
+        while (true) {
+            musicId = sc.next();
+            if (musicId.equals("0")) {
+                break;
+            } else {
+                add(musicId);
+            }
+        }
+
     }
 
     @Override
     public void print() {
-        System.out.format("플레이리스트 이름: %s, 생성일: %s, 번호: %d\n",
-                title, date, num);
-    }
-
-    public void printDetails() {
-        System.out.format("(트랙 %d개)\n", musicList.size());
-        for (Music m : musicList) {
-            m.print();
-        }
+        System.out.format("[%d] %s 플레이리스트 (생성일: %s), 사용자: %s\n",
+                num, title, date, user.name);
     }
 
     @Override
@@ -48,12 +62,32 @@ public class Playlist implements Manageable {
         }
     }
 
-    public void add(Music m) {
-        musicList.add(m);
+    public void printDetails() {
+        System.out.format("(%d개의 트랙)\n", musicList.size());
+        for (Music m : musicList) {
+            m.print();
+        }
     }
 
-    public void delete(Music m) {
-        musicList.remove(m);
+    public void add(String id) {
+        boolean flag = true;
+        Music m = Music.findById(id);
+        if (m != null) {
+            for (Music c : musicList) {
+                if (c.id == m.id) {
+                    System.out.format("이미 플레이리스트에 추가된 곡입니다.\n");
+                    flag = false;
+                }
+            }
+            if (flag) musicList.add(m);
+        }
+    }
+
+    public void delete(String id) {
+        Music m = Music.findById(id);
+        if (m != null) {
+            musicList.remove(m);
+        }
     }
 
 }

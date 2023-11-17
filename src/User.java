@@ -18,10 +18,11 @@ public class User implements Manageable {
 
     @Override
     public void print() {
-        System.out.printf("사용자: %s 전화번호: %s 아이디: %s\n",
+        System.out.printf("사용자: %s, 전화번호: %s, 아이디: %s\n",
                 name, tel, id);
     }
 
+    @Override
     public boolean matches(String kwd) {
         if (tel.equals(kwd)) {
             return true;
@@ -41,7 +42,70 @@ public class User implements Manageable {
         signInfo.close();
     }
 
-    public void printLibrary() {
+    public void userMenu() {
+        int num;
+        while (true) {
+            System.out.print("(1)플레이리스트 출력 (2)플레이리스트 생성 (3)플레이리스트 수정 (기타)종료 ");
+            num = sc.nextInt();
+            if ((num < 1) || (num > 3))
+                break;
+            switch (num) {
+                case 1:
+                    printUserLibrary();
+                    break;
+                case 2:
+                    addPlaylist();
+                    break;
+                case 3:
+                    System.out.format("수정할 플레이리스트의 제목 또는 번호를 입력하세요. : ");
+                    String kwd = sc.next();
+                    Playlist p = searchUserLibrary(kwd);
+                    if (p != null) {
+                        playlistMenu(p);
+                    } else {
+                        System.out.format("검색 결과가 없습니다.\n");
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    private void playlistMenu(Playlist p) {
+        int state;
+        String id;
+        while (true) {
+            System.out.print("(1)음악 추가 (2)음악 삭제 (3)플레이리스트 삭제 (기타)종료 ");
+            state = sc.nextInt();
+            if (state < 1 || state > 3)
+                break;
+            switch (state) {
+                case 1:
+                    System.out.print("추가할 음악(id) : ");
+                    id = sc.next();
+                    p.add(id);
+                    break;
+                case 2:
+                    System.out.print("삭제할 음악(id) : ");
+                    id = sc.next();
+                    p.delete(id);
+                    break;
+                case 3:
+                    library.remove(p);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    private void addPlaylist() {
+        Playlist p = new Playlist();
+        p.create(tel);
+    }
+
+    private void printUserLibrary() {
         System.out.format("%s님의 전체 플레이리스트 목록(%d개)\n", name, library.size());
         for (Playlist p : library) {
             p.print();
@@ -49,51 +113,9 @@ public class User implements Manageable {
         }
     }
 
-    public void addToLibrary() {
-        Playlist p = new Playlist();
-        System.out.print("플레이리스트 제목을 입력하세요 : ");
-        String title = sc.next();
-        if (searchLibrary(title) != null) {
-            System.out.print("이미 존재하는 제목입니다. 다시 시도해주세요.\n");
-        } else {
-            p.create(title);
-            library.add(p);
-        }
-    }
-
-    public void deleteFromLibrary(Playlist p) {
-        library.remove(p);
-    }
-
-    public Playlist searchLibrary(String kwd) {
+    private Playlist searchUserLibrary(String kwd) {
         for (Playlist p : library) {
             if (p.matches(kwd)) return p;
-        }
-        return null;
-    }
-
-    public void addMusic(Playlist p) {
-        System.out.print("추가할 음악(제목, 번호 등) : ");
-        String title = sc.next();
-        Music music = findMusic(title);
-        if (music != null) {
-            p.add(music);
-        }
-    }
-
-    public void deleteMusic(Playlist p) {
-        System.out.print("삭제할 음악(제목, 번호 등) : ");
-        String title = sc.next();
-        Music music = findMusic(title);
-        if (music != null) {
-            p.delete(music);
-        }
-    }
-
-    public Music findMusic(String kwd) {
-        Manager<Music> manager = Stream.musicMgr;
-        for (Music m : manager.mList) {
-            if (m.matchesId(kwd)) return m;
         }
         return null;
     }
