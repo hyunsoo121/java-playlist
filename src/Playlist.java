@@ -2,6 +2,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class Playlist implements Manageable {
     static DateTimeFormatter ymdFormat = DateTimeFormatter.ofPattern("yyyy.MM.dd");
@@ -14,12 +15,21 @@ public class Playlist implements Manageable {
     ArrayList<Music> musicList;
 
     public void create(String tel) {
-        String combined = tel + " ";
-        System.out.format("제목을 입력하세요. : ");
-        combined += sc.next() + " ";
-        combined += LocalDate.now().format(ymdFormat) + " ";
-        Scanner playlistInfo = new Scanner(combined + "0");
-        read(playlistInfo);
+        while(true){
+            String regex = "^\\d+$";
+            String combined = tel + " ";
+            System.out.format("제목을 입력하세요. : ");
+            String title = sc.next();
+            if (Pattern.matches(regex,title)){
+                System.out.println("제목을 숫자로만 구성할 수 없습니다.");
+                continue;
+            }
+            combined += title + " ";
+            combined += LocalDate.now().format(ymdFormat) + " ";
+            Scanner playlistInfo = new Scanner(combined + "0");
+            read(playlistInfo);
+            break;
+        }
     }
 
     @Override
@@ -49,7 +59,7 @@ public class Playlist implements Manageable {
 
     @Override
     public void print() {
-        System.out.format("[%d] %s 플레이리스트 (생성일: %s), 사용자: %s\n",
+        System.out.format("<%d> %s 플레이리스트 (생성일: %s), 사용자: %s\n",
                 num, title, date, user.name);
     }
 

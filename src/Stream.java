@@ -1,5 +1,7 @@
 import java.util.Collections;
+import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class Stream {
     static Manager<User> userMgr = new Manager<>();
@@ -53,10 +55,17 @@ public class Stream {
 
     private void sign() {
         while (true) {
+            sc.useDelimiter("\n");
             User user = null;
             System.out.print("전화번호를 입력하세요.(0 입력 시 종료) : ");
+            String telPattern = "^\\d{3}-\\d{3,4}-\\d{4}$";
             String tel = sc.next();
             if (tel.equals("0")) break;
+            if (!Pattern.matches(telPattern,tel)){
+                System.out.print("유효한 전화번호 형식이 아닙니다. 다음과 같은 형식으로 입력해주세요\n");
+                System.out.print("ex) 010-1234-5678\n");
+                continue;
+            }
             user = userMgr.find(tel);
             if (user != null) {
                 currentUser = user;
@@ -77,7 +86,13 @@ public class Stream {
         int num;
         while (true) {
             System.out.print("(1)출력 (2)검색 (3)나의 플레이리스트 (기타)로그아웃 ");
-            num = sc.nextInt();
+            try {
+                num = sc.nextInt();
+            } catch (InputMismatchException e){
+                System.out.println("올바른 정수를 입력하세요.");
+                sc.nextLine();
+                continue;
+            }
             if (num < 1 || num > 3)
                 break;
             switch (num) {
@@ -98,9 +113,16 @@ public class Stream {
 
     private void printMenu() {
         int num;
+        int state;
         while (true) {
             System.out.print("(1)아티스트출력 (2)앨범출력 (3)음악출력 (기타)종료 ");
-            num = sc.nextInt();
+            try {
+                num = sc.nextInt();
+            } catch (InputMismatchException e){
+                System.out.println("올바른 정수를 입력하세요.");
+                sc.nextLine();
+                continue;
+            }
             if (num < 1 || num > 3)
                 break;
             switch (num) {
@@ -112,7 +134,13 @@ public class Stream {
                     break;
                 case 3:
                     System.out.print("(1)인기순 정렬 (2)최신순 정렬 (기타)종료 ");
-                    int state = sc.nextInt();
+                    try {
+                        state = sc.nextInt();
+                    } catch (InputMismatchException e){
+                        System.out.println("올바른 정수를 입력하세요.");
+                        sc.nextLine();
+                        continue;
+                    }
                     sortList(state);
                     musicMgr.printAll();
                     break;
@@ -126,7 +154,13 @@ public class Stream {
         int num;
         while (true) {
             System.out.print("(1)아티스트 검색 (2)앨범 검색 (3)음악 검색 (기타)종료 ");
-            num = sc.nextInt();
+            try {
+                num = sc.nextInt();
+            } catch (InputMismatchException e){
+                System.out.println("올바른 정수를 입력하세요.");
+                sc.nextLine();
+                continue;
+            }
             if (num < 1 || num > 3)
                 break;
             switch (num) {
