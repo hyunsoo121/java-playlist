@@ -1,8 +1,12 @@
+package stream;
+
+import facade.UIData;
+import manager.Manageable;
+
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class User implements Manageable {
+public class User implements Manageable, UIData {
     Scanner sc = new Scanner(System.in);
     String id;
     String name;
@@ -33,7 +37,6 @@ public class User implements Manageable {
     }
 
     public void signUp(String tel) {
-        sc.useDelimiter("\n");
         String combined = tel + " ";
         System.out.print("아이디 : ");
         combined += sc.next() + " ";
@@ -48,13 +51,7 @@ public class User implements Manageable {
         int num;
         while (true) {
             System.out.print("(1)플레이리스트 출력 (2)플레이리스트 생성 (3)플레이리스트 수정 (기타)종료 ");
-            try {
-                num = sc.nextInt();
-            } catch (InputMismatchException e){
-                System.out.println("올바른 정수를 입력하세요.");
-                sc.nextLine();
-                continue;
-            }
+            num = sc.nextInt();
             if ((num < 1) || (num > 3))
                 break;
             switch (num) {
@@ -85,13 +82,7 @@ public class User implements Manageable {
         String id;
         while (true) {
             System.out.print("(1)음악 추가 (2)음악 삭제 (3)플레이리스트 삭제 (기타)종료 ");
-            try {
-                state = sc.nextInt();
-            } catch (InputMismatchException e){
-                System.out.println("올바른 정수를 입력하세요.");
-                sc.nextInt();
-                continue;
-            }
+            state = sc.nextInt();
             if (state < 1 || state > 3)
                 break;
             switch (state) {
@@ -132,5 +123,20 @@ public class User implements Manageable {
             if (p.matches(kwd)) return p;
         }
         return null;
+    }
+
+    @Override
+    public void set(Object[] uitexts) {
+
+    }
+
+    @Override
+    public String[] getUiTexts() {
+        String[] texts = new String[5];
+        texts[0] = id;
+        texts[1] = tel;
+        texts[2] = name;
+        texts[3] = "" + library.size();
+        return texts;
     }
 }

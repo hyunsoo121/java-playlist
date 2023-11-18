@@ -1,10 +1,15 @@
+package stream;
+
+import facade.UIData;
+import manager.Manageable;
+import mgr.UserMgr;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
-public class Playlist implements Manageable {
+public class Playlist implements Manageable, UIData {
     static DateTimeFormatter ymdFormat = DateTimeFormatter.ofPattern("yyyy.MM.dd");
     static int n = 0;
     Scanner sc = new Scanner(System.in);
@@ -35,9 +40,8 @@ public class Playlist implements Manageable {
     @Override
     public void read(Scanner sc) {
         num = ++n;
-        Manager<User> mgr = Stream.userMgr;
         String tel = sc.next();
-        User u = mgr.find(tel);
+        User u = UserMgr.getInstance().find(tel);
         if (u != null) {
             user = u;
         }
@@ -100,4 +104,23 @@ public class Playlist implements Manageable {
         }
     }
 
+    @Override
+    public void set(Object[] uitexts) {
+
+    }
+
+    @Override
+    public String[] getUiTexts() {
+        String[] texts = new String[5];
+        texts[0] = ""+num;
+        texts[1] = user.tel;
+        texts[2] = title;
+        texts[3] = date;
+        texts[4] = ""+musicList.size();
+        return texts;
+    }
+
+    public ArrayList<Music> getList(){
+        return musicList;
+    }
 }
