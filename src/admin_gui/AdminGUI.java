@@ -13,16 +13,16 @@ public class AdminGUI {
         Stream.getInstance().run();
         startGUI();
     }
-	private static AdminGUI main = null;
-	public static AdminGUI getInstance() {
-		if (main == null)
-			main = new AdminGUI();
-		return main;
-	}
+    private static AdminGUI main = null;
+    public static AdminGUI getInstance() {
+        if (main == null)
+            main = new AdminGUI();
+        return main;
+    }
     private static void startGUI() {
         SwingUtilities.invokeLater(() -> AdminGUI.getInstance().createAndShowGUI());
     }
-	static JFrame mainFrame = new JFrame("TableSelectionDemo");
+    static JFrame mainFrame = new JFrame("TableSelectionDemo");
     private void createAndShowGUI() {
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
