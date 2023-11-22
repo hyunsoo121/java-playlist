@@ -38,7 +38,8 @@ public class Album implements Manageable, UIData {
             artistName += token + " "; // 문자열 name에 추가
         }
         Artist artist = ArtistMgr.getInstance().find(artistName);
-        if (artist != null) artist.albumList.add(this);
+        if (artist != null)
+            artist.albumList.add(this);
         releaseDate = sc.next();
         genre = sc.next();
         imagePath = sc.next();
@@ -52,7 +53,8 @@ public class Album implements Manageable, UIData {
 
     @Override
     public boolean matches(String kwd) {
-        if (albumTitle.contains(kwd)) return true;
+        if (albumTitle.contains(kwd))
+            return true;
         return false;
     }
 
@@ -68,7 +70,13 @@ public class Album implements Manageable, UIData {
         texts[1] = artistName;
         texts[2] = releaseDate;
         texts[3] = genre;
-        texts[4] = ""+musicList.size();
+        texts[4] = "" + musicList.size();
         return texts;
+    }
+
+    @Override
+    public String getImagePath() {
+        // TODO Auto-generated method stub
+        return imagePath;
     }
 }

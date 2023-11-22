@@ -20,12 +20,12 @@ public class Playlist implements Manageable, UIData {
     ArrayList<Music> musicList;
 
     public void create(String tel) {
-        while(true){
+        while (true) {
             String regex = "^\\d+$";
             String combined = tel + " ";
             System.out.format("제목을 입력하세요. : ");
             String title = sc.next();
-            if (Pattern.matches(regex,title)){
+            if (Pattern.matches(regex, title)) {
                 System.out.println("제목을 숫자로만 구성할 수 없습니다.");
                 continue;
             }
@@ -93,7 +93,8 @@ public class Playlist implements Manageable, UIData {
                     flag = false;
                 }
             }
-            if (flag) musicList.add(m);
+            if (flag)
+                musicList.add(m);
         }
     }
 
@@ -112,15 +113,21 @@ public class Playlist implements Manageable, UIData {
     @Override
     public String[] getUiTexts() {
         String[] texts = new String[5];
-        texts[0] = ""+num;
+        texts[0] = "" + num;
         texts[1] = user.tel;
         texts[2] = title;
         texts[3] = date;
-        texts[4] = ""+musicList.size();
+        texts[4] = "" + musicList.size();
         return texts;
     }
 
-    public ArrayList<Music> getList(){
+    public ArrayList<Music> getList() {
         return musicList;
+    }
+
+    @Override
+    public String getImagePath() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

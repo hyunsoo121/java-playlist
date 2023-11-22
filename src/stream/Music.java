@@ -42,10 +42,14 @@ public class Music implements Manageable, UIData {
 
     @Override
     public boolean matches(String kwd) {
-        if ((id + "").equals(kwd)) return true;
-        if (title.contains(kwd)) return true;
-        if (name.contains(kwd)) return true;
-        if (albumTitle.equals(kwd)) return true;
+        if ((id + "").equals(kwd))
+            return true;
+        if (title.contains(kwd))
+            return true;
+        if (name.contains(kwd))
+            return true;
+        if (albumTitle.equals(kwd))
+            return true;
         return false;
     }
 
@@ -67,12 +71,14 @@ public class Music implements Manageable, UIData {
         }
         if (flag == 4) {
             return album.genre;
-        }else return null;
+        } else
+            return null;
     }
 
     public static Music findById(String kwd) {
         for (Music m : MusicMgr.getInstance().mList) {
-            if (m.matchesId(kwd)) return m;
+            if (m.matchesId(kwd))
+                return m;
         }
         return null;
     }
@@ -85,11 +91,17 @@ public class Music implements Manageable, UIData {
     @Override
     public String[] getUiTexts() {
         String[] texts = new String[5];
-        texts[0] = ""+id;
+        texts[0] = "" + id;
         texts[1] = title;
         texts[2] = name;
         texts[3] = albumTitle;
-        texts[4] = ""+views;
+        texts[4] = "" + views;
         return texts;
+    }
+
+    @Override
+    public String getImagePath() {
+        // TODO Auto-generated method stub
+        return album.imagePath;
     }
 }

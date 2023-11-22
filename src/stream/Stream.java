@@ -55,13 +55,12 @@ public class Stream {
                 return new Playlist();
             }
         });
-//        MusicMgr.getInstance().printAll();
-//        AlbumMgr.getInstance().printAll();
-//        ArtistMgr.getInstance().printAll();
-//        UserMgr.getInstance().printAll();
-//        PlaylistMgr.getInstance().printAll();
-
-        sign();
+        // MusicMgr.getInstance().printAll();
+        // AlbumMgr.getInstance().printAll();
+        // ArtistMgr.getInstance().printAll();
+        // UserMgr.getInstance().printAll();
+        // PlaylistMgr.getInstance().printAll();
+        // sign();
     }
 
     private void sign() {
@@ -71,7 +70,8 @@ public class Stream {
             System.out.print("[콘솔] 전화번호를 입력하세요.(0 입력 시 종료) : ");
             String telPattern = "^\\d{3}-\\d{3,4}-\\d{4}$";
             String tel = sc.next();
-            if (tel.equals("0")) break;
+            if (tel.equals("0"))
+                break;
             if (!Pattern.matches(telPattern, tel)) {
                 System.out.print("유효한 전화번호 형식이 아닙니다. 다음과 같은 형식으로 입력해주세요\n");
                 System.out.print("ex) 010-1234-5678\n");
@@ -194,9 +194,9 @@ public class Stream {
 
     private void sortList(int state) {
         if (state == 1) {
-            Collections.sort(MusicMgr.getInstance().mList, (a, b) -> b.views - a.views); //재생수 차트
+            Collections.sort(MusicMgr.getInstance().mList, (a, b) -> b.views - a.views); // 재생수 차트
         } else if (state == 2) {
-            Collections.sort(MusicMgr.getInstance().mList, (a, b) -> b.getInfo(2).compareTo(a.getInfo(1))); //최신순 차트
+            Collections.sort(MusicMgr.getInstance().mList, (a, b) -> b.getInfo(2).compareTo(a.getInfo(1))); // 최신순 차트
         }
     }
 }

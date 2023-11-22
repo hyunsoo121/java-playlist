@@ -58,4 +58,10 @@ public class Artist implements Manageable, UIData {
         texts[3] = agency;
         return texts;
     }
+
+    @Override
+    public String getImagePath() {
+        // TODO Auto-generated method stub
+        return imagePath;
+    }
 }

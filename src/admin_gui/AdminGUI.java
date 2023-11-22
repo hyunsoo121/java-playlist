@@ -13,22 +13,27 @@ public class AdminGUI {
         Stream.getInstance().run();
         startGUI();
     }
+
     private static AdminGUI main = null;
+
     public static AdminGUI getInstance() {
         if (main == null)
             main = new AdminGUI();
         return main;
     }
+
     private static void startGUI() {
         SwingUtilities.invokeLater(() -> AdminGUI.getInstance().createAndShowGUI());
     }
+
     static JFrame mainFrame = new JFrame("TableSelectionDemo");
+
     private void createAndShowGUI() {
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         JTabbedPane jtab = new JTabbedPane();
 
-        setupMusicPane();       // 이곳에 메서드를 삽입하여 Pane 을 추가할 수 있습니다.
+        setupMusicPane(); // 이곳에 메서드를 삽입하여 Pane 을 추가할 수 있습니다.
         setupAlbumPane();
         setupArtistPane();
         setupUserPane();
@@ -44,10 +49,11 @@ public class AdminGUI {
         mainFrame.setVisible(true);
 
         // 폰트 변경
-        try{
+        try {
             Font font = new Font("나눔바른고딕", Font.PLAIN, 15);
             jtab.setFont(font);
-        } catch (Exception ignore) {}
+        } catch (Exception ignore) {
+        }
     }
 
     // 음악 탭
@@ -55,6 +61,7 @@ public class AdminGUI {
     private JPanel musicPane;
     TableFormat musicTable = new TableFormat();
     TopPanel musicTop = new TopPanel();
+
     private void setupMusicPane() {
         musicPane = new JPanel(new BorderLayout());
         musicTable.tableTitle = "music";
@@ -69,6 +76,7 @@ public class AdminGUI {
     private JPanel albumPane;
     TableFormat albumTable = new TableFormat();
     SubTableFormat albumMusicTable = new SubTableFormat();
+
     private void setupAlbumPane() {
         albumPane = new JPanel(new BorderLayout());
         albumTable.tableTitle = "album";
@@ -87,6 +95,7 @@ public class AdminGUI {
     private JPanel artistPane;
     TableFormat artistTable = new TableFormat();
     TopPanel artistTop = new TopPanel();
+
     private void setupArtistPane() {
         artistPane = new JPanel(new BorderLayout());
         artistTable.tableTitle = "artist";
@@ -101,6 +110,7 @@ public class AdminGUI {
     private JPanel userPane;
     TableFormat userTable = new TableFormat();
     TopPanel userTop = new TopPanel();
+
     private void setupUserPane() {
         userPane = new JPanel(new BorderLayout());
         userTable.tableTitle = "user";
@@ -115,6 +125,7 @@ public class AdminGUI {
     private JPanel playlistPane;
     TableFormat playlistTable = new TableFormat();
     SubTableFormat playlistMusicTable = new SubTableFormat();
+
     private void setupPlaylistPane() {
         playlistPane = new JPanel(new BorderLayout());
         playlistTable.tableTitle = "playlist";
@@ -129,40 +140,40 @@ public class AdminGUI {
     }
 
     /*
-    [1단 테이블]
-    - 상단 검색창, 상세보기를 포함한 기본 테이블 탭 메서드
-
-    private JPanel musicPane;
-    TableFormat musicTable = new TableFormat();
-    TopPanel musicTop = new TopPanel();
-    private void setupMusicPane() {
-        musicPane = new JPanel(new BorderLayout());
-        musicTable.tableTitle = "music";
-        musicTable.addComponentsToPane(MusicMgr.getInstance());
-        musicTop.setupTopPane(musicTable);
-        musicPane.add(musicTop, BorderLayout.NORTH);
-        musicPane.add(musicTable, BorderLayout.CENTER);
-    }
-    */
+     * [1단 테이블]
+     * - 상단 검색창, 상세보기를 포함한 기본 테이블 탭 메서드
+     * 
+     * private JPanel musicPane;
+     * TableFormat musicTable = new TableFormat();
+     * TopPanel musicTop = new TopPanel();
+     * private void setupMusicPane() {
+     * musicPane = new JPanel(new BorderLayout());
+     * musicTable.tableTitle = "music";
+     * musicTable.addComponentsToPane(MusicMgr.getInstance());
+     * musicTop.setupTopPane(musicTable);
+     * musicPane.add(musicTop, BorderLayout.NORTH);
+     * musicPane.add(musicTable, BorderLayout.CENTER);
+     * }
+     */
 
     /*
-    [2단 테이블]
-    - 앨범, 플레이리스트에 사용된 2단 테이블 탭 메서드
-
-    private JPanel albumPane;
-    TableFormat albumTable = new TableFormat();
-    SubTableFormat albumMusicTable = new SubTableFormat();
-    private void setupAlbumPane() {
-        albumPane = new JPanel(new BorderLayout());
-        albumTable.tableTitle = "album";
-        albumTable.addComponentsToPane(AlbumMgr.getInstance());
-        albumPane.add(albumTable, BorderLayout.CENTER);
-        JPanel bottom = new JPanel();
-        albumMusicTable.tableTitle = "album-music";
-        albumMusicTable.addComponentsToPane(MusicMgr.getInstance());
-        bottom.add(new JLabel("앨범 수록곡"), BorderLayout.LINE_START);
-        bottom.add(albumMusicTable, BorderLayout.CENTER);
-        albumPane.add(bottom, BorderLayout.SOUTH);
-    }
-    */
+     * [2단 테이블]
+     * - 앨범, 플레이리스트에 사용된 2단 테이블 탭 메서드
+     * 
+     * private JPanel albumPane;
+     * TableFormat albumTable = new TableFormat();
+     * SubTableFormat albumMusicTable = new SubTableFormat();
+     * private void setupAlbumPane() {
+     * albumPane = new JPanel(new BorderLayout());
+     * albumTable.tableTitle = "album";
+     * albumTable.addComponentsToPane(AlbumMgr.getInstance());
+     * albumPane.add(albumTable, BorderLayout.CENTER);
+     * JPanel bottom = new JPanel();
+     * albumMusicTable.tableTitle = "album-music";
+     * albumMusicTable.addComponentsToPane(MusicMgr.getInstance());
+     * bottom.add(new JLabel("앨범 수록곡"), BorderLayout.LINE_START);
+     * bottom.add(albumMusicTable, BorderLayout.CENTER);
+     * albumPane.add(bottom, BorderLayout.SOUTH);
+     * }
+     */
 }

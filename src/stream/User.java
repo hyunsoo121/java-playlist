@@ -120,7 +120,8 @@ public class User implements Manageable, UIData {
 
     private Playlist searchUserLibrary(String kwd) {
         for (Playlist p : library) {
-            if (p.matches(kwd)) return p;
+            if (p.matches(kwd))
+                return p;
         }
         return null;
     }
@@ -138,5 +139,11 @@ public class User implements Manageable, UIData {
         texts[2] = name;
         texts[3] = "" + library.size();
         return texts;
+    }
+
+    @Override
+    public String getImagePath() {
+        // TODO Auto-generated method stub
+        return null;
     }
 }
