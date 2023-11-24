@@ -17,6 +17,8 @@ public class Music implements Manageable, UIData {
     String albumTitle;
     int views = 0;
 
+    int time = 10;
+
     @Override
     public void read(Scanner sc) {
         String inputString = sc.nextLine();
@@ -24,7 +26,8 @@ public class Music implements Manageable, UIData {
         title = parts[0];
         name = parts[1];
         albumTitle = parts[2];
-        views = Integer.parseInt(parts[3]);
+        time = Integer.parseInt(parts[3]);
+        views = Integer.parseInt(parts[4]);
         album = AlbumMgr.getInstance().find(albumTitle);
         if (album != null)
             album.musicList.add(this);
@@ -32,6 +35,7 @@ public class Music implements Manageable, UIData {
         if (artist != null)
             artist.musicList.add(this);
         id = ++num;
+
     }
 
     @Override
@@ -71,7 +75,14 @@ public class Music implements Manageable, UIData {
         }
         if (flag == 4) {
             return album.genre;
-        } else
+        }
+        if (flag == 5) {
+            return name;
+        }
+        if (flag == 6) {
+            return time/60+"분"+time%60+"초";
+        }
+        else
             return null;
     }
 

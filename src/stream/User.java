@@ -4,6 +4,7 @@ import facade.UIData;
 import manager.Manageable;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class User implements Manageable, UIData {
@@ -51,7 +52,13 @@ public class User implements Manageable, UIData {
         int num;
         while (true) {
             System.out.print("(1)플레이리스트 출력 (2)플레이리스트 생성 (3)플레이리스트 수정 (기타)종료 ");
-            num = sc.nextInt();
+            try {
+                num = sc.nextInt();
+            } catch (InputMismatchException e){
+                System.out.println("올바른 정수를 입력하세요.");
+                sc.nextLine();
+                continue;
+            }
             if ((num < 1) || (num > 3))
                 break;
             switch (num) {
@@ -82,7 +89,13 @@ public class User implements Manageable, UIData {
         String id;
         while (true) {
             System.out.print("(1)음악 추가 (2)음악 삭제 (3)플레이리스트 삭제 (기타)종료 ");
-            state = sc.nextInt();
+            try {
+                state = sc.nextInt();
+            } catch (InputMismatchException e){
+                System.out.println("올바른 정수를 입력하세요.");
+                sc.nextInt();
+                continue;
+            }
             if (state < 1 || state > 3)
                 break;
             switch (state) {
