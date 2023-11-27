@@ -1,12 +1,14 @@
 package gui;
 
+import stream.Album;
 import stream.Music;
+import stream.Playlist;
 import ui_config.JText;
 
 import javax.swing.*;
 import java.awt.*;
 
-class ItemRenderer extends JPanel implements ListCellRenderer<Music> {
+class ItemRenderer<T> extends JPanel implements ListCellRenderer<T> {
     private JPanel itemPanel;
     private final JLabel imageLabel;
     private final JText titleLabel;
@@ -41,10 +43,48 @@ class ItemRenderer extends JPanel implements ListCellRenderer<Music> {
     }
 
 
-    @Override
-    public Component getListCellRendererComponent(JList<? extends Music> list, Music music, int index, boolean isSelected, boolean cellHasFocus) {
+//    @Override
+//    public Component getListCellRendererComponent(JList<? extends Music> list, Music music, int index, boolean isSelected, boolean cellHasFocus) {
+//
+//        ImageIcon imageIcon = new ImageIcon("res/"+music.getImagePath());
+//        Image image = imageIcon.getImage();
+//        Image scaledImage = image.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+//        ImageIcon scaledImageIcon = new ImageIcon(scaledImage);
+//
+//        titleLabel.setText(music.getInfo(1));
+//        infoLabel.setText(music.getInfo(5) + " · " + music.getInfo(6));
+//        imageLabel.setIcon(scaledImageIcon);
+//
+//        if (isSelected) {
+//            itemPanel.setBackground(list.getSelectionBackground());
+//            itemPanel.setForeground(list.getSelectionForeground());
+//        } else {
+//            itemPanel.setBackground(list.getBackground());
+//            itemPanel.setForeground(list.getForeground());
+//        }
+//
+//        return this;
+//    }
 
-        ImageIcon imageIcon = new ImageIcon("res/"+music.getImagePath());
+
+    @Override
+    public Component getListCellRendererComponent(JList<? extends T> list, T item, int index, boolean isSelected, boolean cellHasFocus) {
+        if (item instanceof Music) {
+            Music music = (Music) item;
+            setMusicData(music, isSelected, list.getSelectionBackground(), list.getSelectionForeground());
+        } else if (item instanceof Album) {
+            Album album = (Album) item;
+            setAlbumData(album, isSelected, list.getSelectionBackground(), list.getSelectionForeground());
+        } else if (item instanceof Playlist) {
+            Playlist playlist = (Playlist) item;
+            setPlaylistData(playlist, isSelected, list.getSelectionBackground(), list.getSelectionForeground());
+        }
+
+        return this;
+    }
+
+    private void setMusicData(Music music, boolean isSelected, Color selectionBackground, Color selectionForeground) {
+        ImageIcon imageIcon = new ImageIcon("res/" + music.getImagePath());
         Image image = imageIcon.getImage();
         Image scaledImage = image.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
         ImageIcon scaledImageIcon = new ImageIcon(scaledImage);
@@ -54,13 +94,49 @@ class ItemRenderer extends JPanel implements ListCellRenderer<Music> {
         imageLabel.setIcon(scaledImageIcon);
 
         if (isSelected) {
-            itemPanel.setBackground(list.getSelectionBackground());
-            itemPanel.setForeground(list.getSelectionForeground());
+            itemPanel.setBackground(selectionBackground);
+            itemPanel.setForeground(selectionForeground);
         } else {
-            itemPanel.setBackground(list.getBackground());
-            itemPanel.setForeground(list.getForeground());
+            itemPanel.setBackground(UIManager.getColor("List.background"));
+            itemPanel.setForeground(UIManager.getColor("List.foreground"));
         }
+    }
+    private void setAlbumData(Album album, boolean isSelected, Color selectionBackground, Color selectionForeground) {
+        ImageIcon imageIcon = new ImageIcon("res/" + album.getImagePath());
+        Image image = imageIcon.getImage();
+        Image scaledImage = image.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+        ImageIcon scaledImageIcon = new ImageIcon(scaledImage);
 
-        return this;
+        titleLabel.setText(album.getUiTexts()[0]);
+        infoLabel.setText(album.getUiTexts()[1]);
+        imageLabel.setIcon(scaledImageIcon);
+
+        if (isSelected) {
+            itemPanel.setBackground(selectionBackground);
+            itemPanel.setForeground(selectionForeground);
+        } else {
+            itemPanel.setBackground(UIManager.getColor("List.background"));
+            itemPanel.setForeground(UIManager.getColor("List.foreground"));
+        }
+    }
+    private void setPlaylistData(Playlist playlist, boolean isSelected, Color selectionBackground, Color selectionForeground) {
+//        ImageIcon imageIcon = new ImageIcon("res/" + playlist.getImagePath());
+        ImageIcon imageIcon = new ImageIcon("res/" + "002.jpg");
+        Image image = imageIcon.getImage();
+        Image scaledImage = image.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+        ImageIcon scaledImageIcon = new ImageIcon(scaledImage);
+
+        titleLabel.setText(playlist.getUiTexts()[2]);
+        infoLabel.setText(playlist.getUiTexts()[3] + " "
+                + playlist.getUiTexts()[4] + "곡");
+        imageLabel.setIcon(scaledImageIcon);
+
+        if (isSelected) {
+            itemPanel.setBackground(selectionBackground);
+            itemPanel.setForeground(selectionForeground);
+        } else {
+            itemPanel.setBackground(UIManager.getColor("List.background"));
+            itemPanel.setForeground(UIManager.getColor("List.foreground"));
+        }
     }
 }

@@ -30,8 +30,8 @@ public class GUIMain {
         loginPanel.setSize(frame.getWidth(), frame.getHeight());
 
         mainPanel.add(homePanel, "home");
-        mainPanel.add(playerPanel, "player");
-        mainPanel.add(loginPanel, "login");
+//        mainPanel.add(playerPanel, "player");
+//        mainPanel.add(loginPanel, "login");
 
 
         frame.addMouseListener(new MouseAdapter() {

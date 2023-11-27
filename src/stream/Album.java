@@ -74,6 +74,10 @@ public class Album implements Manageable, UIData {
         return texts;
     }
 
+    public ArrayList<Music> getMusicList() {
+        return musicList;
+    }
+
     @Override
     public String getImagePath() {
         // TODO Auto-generated method stub

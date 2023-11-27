@@ -192,7 +192,7 @@ public class Stream {
         }
     }
 
-    private void sortList(int state) {
+    public static void sortList(int state) {
         if (state == 1) {
             Collections.sort(MusicMgr.getInstance().mList, (a, b) -> b.views - a.views); // 재생수 차트
         } else if (state == 2) {
