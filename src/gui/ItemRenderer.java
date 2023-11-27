@@ -11,8 +11,8 @@ import java.awt.*;
 class ItemRenderer<T> extends JPanel implements ListCellRenderer<T> {
     private JPanel itemPanel;
     private final JLabel imageLabel;
-    private final JText titleLabel;
-    private final JText infoLabel;
+    protected final JText titleLabel;
+    protected final JText infoLabel;
 
     public ItemRenderer() {
         setLayout(new GridLayout(1, 1));

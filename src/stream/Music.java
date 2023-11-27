@@ -82,6 +82,9 @@ public class Music implements Manageable, UIData {
         if (flag == 6) {
             return time/60+"분"+time%60+"초";
         }
+        if (flag == 7) {
+            return (""+time);
+        }
         else
             return null;
     }
