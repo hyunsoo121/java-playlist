@@ -31,7 +31,6 @@ class ItemRenderer<T> extends JPanel implements ListCellRenderer<T> {
         textPanel.setBackground(new Color(0,0,0,0));
 
         titleLabel = new JText("");
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 14));
         infoLabel = new JText("");
 
         textPanel.add(titleLabel);
@@ -121,7 +120,7 @@ class ItemRenderer<T> extends JPanel implements ListCellRenderer<T> {
     }
     private void setPlaylistData(Playlist playlist, boolean isSelected, Color selectionBackground, Color selectionForeground) {
 //        ImageIcon imageIcon = new ImageIcon("res/" + playlist.getImagePath());
-        ImageIcon imageIcon = new ImageIcon("res/" + "002.jpg");
+        ImageIcon imageIcon = new ImageIcon("res/" + "006.png");
         Image image = imageIcon.getImage();
         Image scaledImage = image.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
         ImageIcon scaledImageIcon = new ImageIcon(scaledImage);

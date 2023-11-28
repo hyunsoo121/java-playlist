@@ -26,7 +26,7 @@ public class AdminGUI {
         SwingUtilities.invokeLater(() -> AdminGUI.getInstance().createAndShowGUI());
     }
 
-    static JFrame mainFrame = new JFrame("TableSelectionDemo");
+    static JFrame mainFrame = new JFrame("Colon: Admin GUI");
 
     private void createAndShowGUI() {
         mainFrame.setLocationRelativeTo(null);

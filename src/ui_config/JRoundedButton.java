@@ -57,7 +57,7 @@ public class JRoundedButton extends JButton {
             graphics.setColor(getBackground());
         }
 
-        graphics.fillRoundRect(0, 0, width, height, 0, 0);
+        graphics.fillRoundRect(0, 0, width, height, 7, 7);
 
         FontMetrics fontMetrics = graphics.getFontMetrics();
         Rectangle stringBounds = fontMetrics.getStringBounds(this.getText(), graphics).getBounds();
