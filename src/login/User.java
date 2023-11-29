@@ -2,7 +2,7 @@ package login;
 
 import java.util.Scanner;
 
-class User {
+public class User {
     private String phoneNum;
     private String id;
     private String name;

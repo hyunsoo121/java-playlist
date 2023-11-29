@@ -10,7 +10,7 @@ public class UserDataSet {
     ArrayList<User> userList = new ArrayList<User>();
 
     //파일읽기
-    void readAll(String filename) {
+    public void readAll(String filename) {
         Scanner filein = openFile(filename);
         User u = null;
         while (filein.hasNext()) {
