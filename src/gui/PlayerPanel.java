@@ -215,7 +215,7 @@ public class PlayerPanel extends JPanel implements ListSelectionListener {
         back = new JRoundedButton("뒤로가기");
         back.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "뒤로가기 액션");
+                GUIMain.backToHome();
             }
         });
         back.addMouseListener(new BackButtonMouseListener());

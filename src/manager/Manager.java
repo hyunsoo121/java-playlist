@@ -20,6 +20,10 @@ public class Manager<T extends Manageable> {
         filein.close();
     }
 
+    public void read(T t){
+        mList.add(t);
+    }
+
     public void printAll() {
         for (T t : mList) {
             t.print();

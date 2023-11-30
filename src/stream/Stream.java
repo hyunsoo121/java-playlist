@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 public class Stream {
     Scanner sc = new Scanner(System.in);
     private static Stream stream = null;
-    User currentUser;
+    public static User currentUser;
 
     public static void main(String[] args) {
         Stream.getInstance().run();

@@ -2,6 +2,7 @@ package stream;
 
 import facade.UIData;
 import manager.Manageable;
+import mgr.PlaylistMgr;
 import mgr.UserMgr;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -36,6 +37,18 @@ public class Playlist implements Manageable, UIData {
             break;
         }
     }
+
+    public void create(String tel, String listName){
+        num = ++n;
+        User u = UserMgr.getInstance().find(tel);
+        user = u;
+        title = listName;
+        date = LocalDate.now().format(ymdFormat);
+        musicList = new ArrayList<>();
+        user.library.add(this);
+        PlaylistMgr.getInstance().read(this);
+    }
+
 
     @Override
     public void read(Scanner sc) {

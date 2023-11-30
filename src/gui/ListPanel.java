@@ -46,7 +46,7 @@ public class ListPanel extends JPanel {
                 buttonPanel.add(rb2);
 
                 JRoundedButton rb3 = new JRoundedButton("플레이리스트에 추가");
-                buttonPanel.add(rb3, BorderLayout.SOUTH);
+                buttonPanel.add(rb3);
 
                 add(topPanel);
                 add(buttonPanel);
@@ -78,7 +78,7 @@ public class ListPanel extends JPanel {
                     public void actionPerformed(ActionEvent e) {
                         Stream.sortList(1);
                         updateList(testList);
-                        rb2.setBackground(Palette.backgroundWhite);
+                        rb2.setBackground(Palette.primaryGray);
                         rb2.setForeground(Palette.textBlack);
                         rb1.setBackground(Palette.primaryBlue);
                         rb1.setForeground(Palette.backgroundWhite);
@@ -91,7 +91,7 @@ public class ListPanel extends JPanel {
                     public void actionPerformed(ActionEvent e) {
                         Stream.sortList(2);
                         updateList(testList);
-                        rb1.setBackground(Palette.backgroundWhite);
+                        rb1.setBackground(Palette.primaryGray);
                         rb1.setForeground(Palette.textBlack);
                         rb2.setBackground(Palette.primaryBlue);
                         rb2.setForeground(Palette.backgroundWhite);
@@ -126,22 +126,31 @@ public class ListPanel extends JPanel {
                         topPanel2.setLayout(new FlowLayout(FlowLayout.LEFT));
 
                         JText text1 = new JText("플레이리스트를 선택하세요", 700, 50);
-                        topPanel2.add(text1, BorderLayout.WEST);
-                        topPanel2.add(Box.createVerticalGlue());
+                        topPanel2.add(text1);
+
+
+                        JPanel buttonPanel2 = new JPanel();
+                        buttonPanel2.setBackground(Palette.backgroundWhite);
+                        buttonPanel2.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
                         JRoundedButton rb1 = new JRoundedButton("추가", Palette.backgroundWhite, Palette.primaryBlue);
-                        topPanel2.add(rb1);
-                        JRoundedButton backButton = new JRoundedButton("뒤로가기", Palette.backgroundWhite, Palette.primaryBlue);
-                        topPanel2.add(backButton);
+                        buttonPanel2.add(rb1);
+
+
+                        JRoundedButton backButton = new JRoundedButton("뒤로가기");
+                        buttonPanel2.add(backButton);
 
                         add(topPanel2);
+                        add(buttonPanel2);
 
                         JPanel testList2 = new JPanel();
                         testList2.setBackground(Palette.backgroundWhite);
 
                         DefaultListModel<Playlist> listModel3 = new DefaultListModel<>();
                         for (Playlist list : PlaylistMgr.getInstance().mList) {
-                            listModel3.addElement(list);
+                            if (list.getUiTexts()[1].equals(GUIMain.currentUser.getUiTexts()[1])) {
+                                listModel3.addElement(list);
+                            }
                         }
 
                         JList<Playlist> jList3 = new JList<>(listModel3);
@@ -173,6 +182,7 @@ public class ListPanel extends JPanel {
 
                             }
                         });
+
                         backButton.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
@@ -186,8 +196,11 @@ public class ListPanel extends JPanel {
 
                                 topPanel2.setVisible(false);
                                 remove(topPanel2);
+                                buttonPanel2.setVisible(false);
+                                remove(buttonPanel2);
                                 testList2.setVisible(false);
                                 remove(testList2);
+
 
                                 revalidate();
                                 repaint();
@@ -222,7 +235,7 @@ public class ListPanel extends JPanel {
                 JScrollPane scrollPane2 = new JScrollPane(jList2);
                 scrollPane2.setBackground(Palette.backgroundWhite);
                 scrollPane2.setBorder(BorderFactory.createEmptyBorder());
-                scrollPane2.setPreferredSize(new Dimension(900,500));
+                scrollPane2.setPreferredSize(new Dimension(900,600));
 
                 testList2.add(scrollPane2, BorderLayout.CENTER);
                 add(testList2);
@@ -234,8 +247,7 @@ public class ListPanel extends JPanel {
                             int selectedIndex = jList2.getSelectedIndex();
                             if (selectedIndex != -1) {
                                 Album selectedAlbum = listModel2.getElementAt(selectedIndex);
-                                PlayerPanel playerPanel = new PlayerPanel(selectedAlbum.getMusicList());
-                                //PlayerPanel show
+                                GUIMain.manageList(selectedAlbum.getMusicList());
                             }
                         }
                     }
@@ -249,14 +261,30 @@ public class ListPanel extends JPanel {
                 JText text4 = new JText("플레이리스트", Palette.primaryBlue,400, 40);
                 topPanel3.add(text4);
 
+                JPanel buttonPanel2 = new JPanel();
+                buttonPanel2.setBackground(Palette.backgroundWhite);
+                buttonPanel2.setLayout(new FlowLayout(FlowLayout.RIGHT));
+                JTextField tfName = new JTextField(18);
+                tfName.setBackground(Palette.primaryGrayAlt);
+                tfName.setFont(new Font("LINE Seed Sans KR Regular", Font.PLAIN, 20));
+                tfName.setBorder(BorderFactory.createEmptyBorder());
+                tfName.setPreferredSize(new Dimension(tfName.getPreferredSize().width, 50));
+                buttonPanel2.add(tfName);
+
+                JRoundedButton rb4 = new JRoundedButton("새 플레이리스트 추가", Palette.backgroundWhite, Palette.primaryBlue);
+                buttonPanel2.add(rb4);
+
                 add(topPanel3);
+                add(buttonPanel2);
 
                 JPanel testList3 = new JPanel();
                 testList3.setBackground(Palette.backgroundWhite);
 
                 DefaultListModel<Playlist> listModel3 = new DefaultListModel<>();
                 for (Playlist list : PlaylistMgr.getInstance().mList) {
-                    listModel3.addElement(list);
+                    if (list.getUiTexts()[1].equals(GUIMain.currentUser.getUiTexts()[1])) {
+                        listModel3.addElement(list);
+                    }
                 }
 
                 JList<Playlist> jList3 = new JList<>(listModel3);
@@ -267,7 +295,7 @@ public class ListPanel extends JPanel {
                 JScrollPane scrollPane3 = new JScrollPane(jList3);
                 scrollPane3.setBackground(Palette.backgroundWhite);
                 scrollPane3.setBorder(BorderFactory.createEmptyBorder());
-                scrollPane3.setPreferredSize(new Dimension(900,500));
+                scrollPane3.setPreferredSize(new Dimension(900,600));
 
                 testList3.add(scrollPane3, BorderLayout.CENTER);
                 add(testList3);
@@ -280,9 +308,25 @@ public class ListPanel extends JPanel {
                             if (selectedIndex != -1) {
                                 Playlist selectedList = listModel3.getElementAt(selectedIndex);
                                 PlayerPanel playerPanel = new PlayerPanel(selectedList.getList());
-                                //PlayerPanel show
+                                GUIMain.manageList(selectedList.getList());
                             }
                         }
+                    }
+                });
+                rb4.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        String playlistName = tfName.getText();
+                        Playlist newPlaylist = new Playlist();
+                        newPlaylist.create(GUIMain.currentUser.getUiTexts()[1], playlistName);
+
+                        JOptionPane.showMessageDialog(
+                                ListPanel.this,
+                                "Playlist '" + playlistName + "'가 생성되었습니다!",
+                                "Playlist Creation",
+                                JOptionPane.INFORMATION_MESSAGE
+                        );
+                        updatePlaylist(testList3);
                     }
                 });
                 break;
@@ -313,4 +357,31 @@ public class ListPanel extends JPanel {
         revalidate();
         repaint();
     }
+
+    private void updatePlaylist(JPanel testList) {
+        DefaultListModel<Playlist> listModel3 = new DefaultListModel<>();
+        for (Playlist list : PlaylistMgr.getInstance().mList) {
+            if (list.getUiTexts()[1].equals(GUIMain.currentUser.getUiTexts()[1])) {
+                listModel3.addElement(list);
+            }
+        }
+
+        JList<Playlist> jList3 = new JList<>(listModel3);
+        jList3.setCellRenderer(new ItemRenderer<Playlist>());
+        jList3.setBorder(BorderFactory.createEmptyBorder());
+        jList3.setBackground(Palette.backgroundWhite);
+
+        JScrollPane scrollPane3 = new JScrollPane(jList3);
+        scrollPane3.setBackground(Palette.backgroundWhite);
+        scrollPane3.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane3.setPreferredSize(new Dimension(900, 600));
+
+        testList.removeAll();
+        testList.setLayout(new BorderLayout());
+        testList.add(scrollPane3, BorderLayout.CENTER);
+
+        revalidate();
+        repaint();
+    }
+
 }

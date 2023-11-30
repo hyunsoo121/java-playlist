@@ -1,14 +1,22 @@
 package gui;
 
+import stream.Music;
+import stream.Playlist;
 import stream.Stream;
+import stream.User;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class GUIMain {
     private static Point draggable;
     static Dimension mainSize = new Dimension(1200, 800);
+
+    static JPanel mainPanel = new JPanel(new CardLayout());
+
+    static User currentUser = new User();
 
     public static void main(String[] args) {
         Stream.getInstance().run();
@@ -20,18 +28,18 @@ public class GUIMain {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1200, 800);
 
-        JPanel mainPanel = new JPanel(new CardLayout());
 
-        HomePanel homePanel = new HomePanel();
-        homePanel.setSize(frame.getWidth(), frame.getHeight());
-        PlayerPanel playerPanel = new PlayerPanel();
-        playerPanel.setSize(frame.getWidth(), frame.getHeight());
+
+//        HomePanel homePanel = new HomePanel();
+//        homePanel.setSize(frame.getWidth(), frame.getHeight());
+//        PlayerPanel playerPanel = new PlayerPanel();
+//        playerPanel.setSize(frame.getWidth(), frame.getHeight());
         LoginPanel loginPanel = new LoginPanel();
         loginPanel.setSize(frame.getWidth(), frame.getHeight());
 
-        mainPanel.add(homePanel, "home");
+//        mainPanel.add(homePanel, "home");
 //        mainPanel.add(playerPanel, "player");
-//        mainPanel.add(loginPanel, "login");
+        mainPanel.add(loginPanel, "login");
 
 
         frame.addMouseListener(new MouseAdapter() {
@@ -48,5 +56,36 @@ public class GUIMain {
         frame.add(mainPanel);
         mainPanel.setSize(mainSize);
         frame.setVisible(true);
+
+        ((CardLayout) mainPanel.getLayout()).show(mainPanel, "login");
+    }
+
+    public static void manageList(ArrayList<Music> mList){
+        PlayerPanel updatePlayerPanel = new PlayerPanel(mList);
+        mainPanel.add(updatePlayerPanel, "player");
+
+        ((CardLayout) mainPanel.getLayout()).show(mainPanel, "player");
+        mainPanel.revalidate();
+        mainPanel.repaint();
+    }
+
+    public static void backToHome(){
+        ((CardLayout) mainPanel.getLayout()).show(mainPanel, "home");
+        mainPanel.revalidate();
+        mainPanel.repaint();
+    }
+
+    public static void login(){
+        HomePanel homePanel = new HomePanel(currentUser);
+        mainPanel.add(homePanel, "home");
+        ((CardLayout) mainPanel.getLayout()).show(mainPanel, "home");
+        mainPanel.revalidate();
+        mainPanel.repaint();
+    }
+
+    public static void logout() {
+        ((CardLayout) mainPanel.getLayout()).show(mainPanel, "login");
+        mainPanel.revalidate();
+        mainPanel.repaint();
     }
 }

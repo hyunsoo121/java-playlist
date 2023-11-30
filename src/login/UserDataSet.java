@@ -36,7 +36,7 @@ public class UserDataSet {
     // 회원 추가
     public void addUsers(User user) throws IOException {
         userList.add(user);
-        fileWritter(user);
+//        fileWritter(user);
     }
     //user.txt 파일에 새로운 회원 입력
     public void fileWritter(User user) throws IOException {

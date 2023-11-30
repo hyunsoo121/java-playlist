@@ -22,10 +22,18 @@ public class User implements Manageable, UIData {
         library = new ArrayList<>();
     }
 
+    public void read(String tel, String id, String name) {
+        this.tel = tel;
+        this.id = id;
+        this.name = name;
+        library = new ArrayList<>();
+    }
+
     @Override
     public void print() {
         System.out.printf("사용자: %s, 전화번호: %s, 아이디: %s\n",
                 name, tel, id);
+        printUserLibrary();
     }
 
     @Override
@@ -123,7 +131,7 @@ public class User implements Manageable, UIData {
         p.create(tel);
     }
 
-    private void printUserLibrary() {
+    public void printUserLibrary() {
         System.out.format("%s님의 전체 플레이리스트 목록(%d개)\n", name, library.size());
         for (Playlist p : library) {
             p.print();

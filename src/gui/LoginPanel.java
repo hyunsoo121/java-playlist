@@ -2,6 +2,8 @@ package gui;
 
 import login.User;
 import login.UserDataSet;
+import mgr.UserMgr;
+import stream.Stream;
 import ui_config.JRoundedButton;
 import ui_config.JText;
 import ui_config.Palette;
@@ -190,11 +192,13 @@ public class LoginPanel extends JPanel {
 
                         // 다 완료될 경우(추가해야함!!!)
                     } else {
-
-
                         setVisible(false);
+                        stream.User user = UserMgr.getInstance().find(tfPhoneNum.getText());
+                        GUIMain.currentUser = user;
                         tfId.setText("");
                         tfPhoneNum.setText("");
+                        GUIMain.login();
+
                     }
                     // 존재하지 않는 Id일 경우
                 } else {
@@ -381,6 +385,11 @@ public class LoginPanel extends JPanel {
                                     tfName.getText(),
                                     tfPhoneNum.getText()
                             ));
+                            stream.User user = new stream.User();
+                            user.read(tfId.getText(),
+                                    tfName.getText(),
+                                    tfPhoneNum.getText());
+                            UserMgr.getInstance().mList.add(user);
                             cardLayout.show(cardPanel, "pnlLogin");
                         } catch (IOException e) {
                             throw new RuntimeException(e);

@@ -36,7 +36,7 @@ public class HomePanel extends JPanel {
         JRoundedButton sideButton1 = new JRoundedButton("콜론차트", 400, 17);
         JRoundedButton sideButton2 = new JRoundedButton("앨범목록", 400, 17);
         JRoundedButton sideButton3 = new JRoundedButton("내 플레이리스트", 400, 17);
-        JRoundedButton sideButton4 = new JRoundedButton("사용자님 로그아웃", 400, 17);
+        JRoundedButton sideButton4 = new JRoundedButton( currentUser.getUiTexts()[2] + "님 로그아웃", 400, 17);
 
         Dimension buttonSize = new Dimension(250, 60);
 
@@ -93,7 +93,12 @@ public class HomePanel extends JPanel {
                 cardLayout.show(mainPane, "tab3");
             }
         });
-
+        sideButton4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GUIMain.logout();
+            }
+        });
         add(mainPane, BorderLayout.EAST);
     }
 }

@@ -14,10 +14,10 @@ public class Palette {
     public static Color transparent = new Color(0, 0, 0, 0);
 
     public static Font lineBold(int size) {
-        return new Font("LINE Seed Sans KR Bold", Font.PLAIN, size);
+        return new Font("LINE Seed Sans KR", Font.PLAIN, size);
     }
 
     public static Font lineRegular(int size) {
-        return new Font("LINE Seed Sans KR Regular", Font.PLAIN, size);
+        return new Font("LINE Seed Sans KR", Font.PLAIN, size);
     }
 }
