@@ -30,7 +30,7 @@ public class ListPanel extends JPanel {
                 topPanel.setBackground(Palette.backgroundWhite);
 
                 JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-                JText text1 = new JText("음원차트", 700, 50);
+                JText text1 = new JText("콜론차트", 700, 50);
                 leftPanel.add(text1);
 
                 leftPanel.setBackground(Palette.backgroundWhite);
