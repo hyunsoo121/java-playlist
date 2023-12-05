@@ -51,12 +51,6 @@ public class PlayerPanel extends JPanel implements ListSelectionListener {
         this(MusicMgr.getInstance().mList);
     }
 
-//	GUIMain guiMain;
-//	public PlayerPanel(ArrayList<Music> mList, GUIMain main) {
-//		this(mList);
-//		guiMain = main;
-//	}
-
     public PlayerPanel(ArrayList<Music> mList) {
         listModel = new DefaultListModel<>();
         for(Music music : mList) {

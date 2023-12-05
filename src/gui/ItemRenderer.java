@@ -41,31 +41,6 @@ class ItemRenderer<T> extends JPanel implements ListCellRenderer<T> {
         add(itemPanel);
     }
 
-
-//    @Override
-//    public Component getListCellRendererComponent(JList<? extends Music> list, Music music, int index, boolean isSelected, boolean cellHasFocus) {
-//
-//        ImageIcon imageIcon = new ImageIcon("res/"+music.getImagePath());
-//        Image image = imageIcon.getImage();
-//        Image scaledImage = image.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
-//        ImageIcon scaledImageIcon = new ImageIcon(scaledImage);
-//
-//        titleLabel.setText(music.getInfo(1));
-//        infoLabel.setText(music.getInfo(5) + " · " + music.getInfo(6));
-//        imageLabel.setIcon(scaledImageIcon);
-//
-//        if (isSelected) {
-//            itemPanel.setBackground(list.getSelectionBackground());
-//            itemPanel.setForeground(list.getSelectionForeground());
-//        } else {
-//            itemPanel.setBackground(list.getBackground());
-//            itemPanel.setForeground(list.getForeground());
-//        }
-//
-//        return this;
-//    }
-
-
     @Override
     public Component getListCellRendererComponent(JList<? extends T> list, T item, int index, boolean isSelected, boolean cellHasFocus) {
         if (item instanceof Music) {
@@ -119,7 +94,6 @@ class ItemRenderer<T> extends JPanel implements ListCellRenderer<T> {
         }
     }
     private void setPlaylistData(Playlist playlist, boolean isSelected, Color selectionBackground, Color selectionForeground) {
-//        ImageIcon imageIcon = new ImageIcon("res/" + playlist.getImagePath());
         ImageIcon imageIcon = new ImageIcon("res/" + "006.png");
         Image image = imageIcon.getImage();
         Image scaledImage = image.getScaledInstance(40, 40, Image.SCALE_SMOOTH);

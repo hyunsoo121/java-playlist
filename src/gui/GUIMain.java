@@ -1,7 +1,6 @@
 package gui;
 
 import stream.Music;
-import stream.Playlist;
 import stream.Stream;
 import stream.User;
 
@@ -29,17 +28,9 @@ public class GUIMain {
         frame.setSize(1500, 800);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-
-
-//        HomePanel homePanel = new HomePanel();
-//        homePanel.setSize(frame.getWidth(), frame.getHeight());
-//        PlayerPanel playerPanel = new PlayerPanel();
-//        playerPanel.setSize(frame.getWidth(), frame.getHeight());
         LoginPanel loginPanel = new LoginPanel();
         loginPanel.setSize(frame.getWidth(), frame.getHeight());
 
-//        mainPanel.add(homePanel, "home");
-//        mainPanel.add(playerPanel, "player");
         mainPanel.add(loginPanel, "login");
 
 

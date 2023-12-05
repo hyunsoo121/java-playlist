@@ -26,26 +26,36 @@ public class ListPanel extends JPanel {
 
         switch (page) {
             case 1:
-                JPanel topPanel = new JPanel();
+                JPanel topPanel = new JPanel(new BorderLayout());
                 topPanel.setBackground(Palette.backgroundWhite);
-                topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-                JText text1 = new JText("차트", 700, 50);
-                topPanel.add(text1, BorderLayout.WEST);
-                topPanel.add(Box.createVerticalGlue());
+                JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+                JText text1 = new JText("음원차트", 700, 50);
+                leftPanel.add(text1);
 
-                JPanel buttonPanel = new JPanel();
+                leftPanel.setBackground(Palette.backgroundWhite);
+                leftPanel.setBorder(BorderFactory.createEmptyBorder(40, 0, 0, 0));
+
+                topPanel.add(leftPanel, BorderLayout.NORTH);
+
+
+                JPanel buttonPanel = new JPanel(new BorderLayout());
                 buttonPanel.setBackground(Palette.backgroundWhite);
-                buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+                JPanel flowLayoutPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+                flowLayoutPanel.setBackground(Palette.backgroundWhite);
+                flowLayoutPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
 
                 JRoundedButton rb1 = new JRoundedButton("인기순", Palette.backgroundWhite, Palette.primaryBlue);
-                buttonPanel.add(rb1);
+                flowLayoutPanel.add(rb1);
 
                 JRoundedButton rb2 = new JRoundedButton("최신순");
-                buttonPanel.add(rb2);
+                flowLayoutPanel.add(rb2);
 
                 JRoundedButton rb3 = new JRoundedButton("플레이리스트에 추가");
-                buttonPanel.add(rb3);
+                flowLayoutPanel.add(rb3);
+
+                buttonPanel.add(flowLayoutPanel, BorderLayout.SOUTH);
 
                 add(topPanel);
                 add(buttonPanel);
@@ -67,10 +77,12 @@ public class ListPanel extends JPanel {
                 JScrollPane scrollPane = new JScrollPane(jList);
                 scrollPane.setBackground(Palette.backgroundWhite);
                 scrollPane.setBorder(BorderFactory.createEmptyBorder());
-                scrollPane.setPreferredSize(new Dimension(900,500));
+                scrollPane.setPreferredSize(new Dimension(1500,750));
 
-                testList.add(scrollPane, BorderLayout.CENTER);
+                testList.setLayout(new FlowLayout(FlowLayout.LEFT));
+                testList.add(scrollPane);
                 add(testList);
+
 
                 rb1.addActionListener(new ActionListener() {
                     @Override
@@ -120,12 +132,19 @@ public class ListPanel extends JPanel {
                         testList.setVisible(false);
                         remove(testList);
 
+
                         JPanel topPanel2 = new JPanel();
                         topPanel2.setBackground(Palette.backgroundWhite);
                         topPanel2.setLayout(new FlowLayout(FlowLayout.LEFT));
 
+                        JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
                         JText text1 = new JText("플레이리스트를 선택하세요", 700, 50);
-                        topPanel2.add(text1);
+                        leftPanel.add(text1);
+
+                        leftPanel.setBackground(Palette.backgroundWhite);
+                        leftPanel.setBorder(BorderFactory.createEmptyBorder(40, 0, 0, 0));
+
+                        topPanel2.add(leftPanel, BorderLayout.NORTH);
 
 
                         JPanel buttonPanel2 = new JPanel();
@@ -139,11 +158,21 @@ public class ListPanel extends JPanel {
                         JRoundedButton backButton = new JRoundedButton("뒤로가기");
                         buttonPanel2.add(backButton);
 
+                        buttonPanel2.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 200));
+
                         add(topPanel2);
                         add(buttonPanel2);
 
                         JPanel testList2 = new JPanel();
                         testList2.setBackground(Palette.backgroundWhite);
+                        testList2.setLayout(new FlowLayout(FlowLayout.LEFT));
+                        testList2.setLayout(new BorderLayout());
+
+                        JPanel emptyPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+                        JText text2= new JText("플레이리스트가 없습니다", Palette.primaryBlue,400, 50);
+                        emptyPanel.add(text2);
+                        emptyPanel.setPreferredSize(new Dimension(1500, 750));
+                        emptyPanel.setBackground(Palette.backgroundWhite);
 
                         DefaultListModel<Playlist> listModel3 = new DefaultListModel<>();
                         for (Playlist list : PlaylistMgr.getInstance().mList) {
@@ -160,9 +189,15 @@ public class ListPanel extends JPanel {
                         JScrollPane scrollPane3 = new JScrollPane(jList3);
                         scrollPane3.setBackground(Palette.backgroundWhite);
                         scrollPane3.setBorder(BorderFactory.createEmptyBorder());
-                        scrollPane3.setPreferredSize(new Dimension(900,500));
+                        scrollPane.setPreferredSize(new Dimension(1500,750));
 
-                        testList2.add(scrollPane3, BorderLayout.CENTER);
+                        testList.setLayout(new FlowLayout(FlowLayout.LEFT));
+                        if (listModel3.isEmpty()) {
+                            testList2.add(emptyPanel, BorderLayout.CENTER);
+                        } else {
+                            testList2.add(scrollPane3, BorderLayout.CENTER);
+                        }
+
                         add(testList2);
 
                         rb1.addActionListener(new ActionListener() {
@@ -210,12 +245,18 @@ public class ListPanel extends JPanel {
                 });
                 break;
             case 2:
-                JPanel topPanel2 = new JPanel();
-                topPanel2.setBackground(Palette.backgroundWhite);
-                topPanel2.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-                JText text3 = new JText("앨범", 700, 50);
-                topPanel2.add(text3);
+                JPanel topPanel2 = new JPanel(new BorderLayout());
+                topPanel2.setBackground(Palette.backgroundWhite);
+
+                JPanel leftPanel2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+                JText text2 = new JText("앨범목록", 700, 50);
+                leftPanel2.add(text2);
+
+                leftPanel2.setBackground(Palette.backgroundWhite);
+                leftPanel2.setBorder(BorderFactory.createEmptyBorder(40, 0, 0, 0));
+
+                topPanel2.add(leftPanel2, BorderLayout.NORTH);
 
                 add(topPanel2);
                 JPanel testList2 = new JPanel();
@@ -234,7 +275,9 @@ public class ListPanel extends JPanel {
                 JScrollPane scrollPane2 = new JScrollPane(jList2);
                 scrollPane2.setBackground(Palette.backgroundWhite);
                 scrollPane2.setBorder(BorderFactory.createEmptyBorder());
-                scrollPane2.setPreferredSize(new Dimension(900,600));
+                scrollPane2.setPreferredSize(new Dimension(1500,850));
+
+                testList2.setLayout(new FlowLayout(FlowLayout.LEFT));
 
                 testList2.add(scrollPane2, BorderLayout.CENTER);
                 add(testList2);
@@ -253,16 +296,23 @@ public class ListPanel extends JPanel {
                 });
                 break;
             case 3:
-                JPanel topPanel3 = new JPanel();
+                JPanel topPanel3 = new JPanel(new BorderLayout());
                 topPanel3.setBackground(Palette.backgroundWhite);
-                topPanel3.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-                JText text4 = new JText("플레이리스트", Palette.primaryBlue,400, 40);
-                topPanel3.add(text4);
+                JPanel leftPanel3 = new JPanel(new FlowLayout(FlowLayout.LEFT));
+                JText text3 = new JText("내 플레이리스트", Palette.primaryBlue,400, 50);
+                leftPanel3.add(text3);
+
+                leftPanel3.setBackground(Palette.backgroundWhite);
+                leftPanel3.setBorder(BorderFactory.createEmptyBorder(40, 0, 0, 0));
+
+                topPanel3.add(leftPanel3, BorderLayout.NORTH);
+
+                add(topPanel3);
 
                 JPanel buttonPanel2 = new JPanel();
                 buttonPanel2.setBackground(Palette.backgroundWhite);
-                buttonPanel2.setLayout(new FlowLayout(FlowLayout.RIGHT));
+                buttonPanel2.setLayout(new FlowLayout(FlowLayout.LEFT));
                 JTextField tfName = new JTextField(18);
                 tfName.setBackground(Palette.primaryGrayAlt);
                 tfName.setFont(new Font("LINE Seed Sans KR Regular", Font.PLAIN, 20));
@@ -305,7 +355,9 @@ public class ListPanel extends JPanel {
                 JScrollPane scrollPane3 = new JScrollPane(jList3);
                 scrollPane3.setBackground(Palette.backgroundWhite);
                 scrollPane3.setBorder(BorderFactory.createEmptyBorder());
-                scrollPane3.setPreferredSize(new Dimension(900,600));
+                scrollPane3.setPreferredSize(new Dimension(1500,750));
+
+                testList3.setLayout(new FlowLayout(FlowLayout.LEFT));
 
                 testList3.add(scrollPane3, BorderLayout.CENTER);
                 add(testList3);
@@ -317,6 +369,7 @@ public class ListPanel extends JPanel {
                             int selectedIndex = jList3.getSelectedIndex();
                             if (selectedIndex != -1) {
                                 Playlist selectedList = listModel3.getElementAt(selectedIndex);
+                                selectedList.print();
                                 PlayerPanel playerPanel = new PlayerPanel(selectedList.getList());
                                 GUIMain.manageList(selectedList.getList());
                             }
@@ -361,7 +414,9 @@ public class ListPanel extends JPanel {
         JScrollPane scrollPane = new JScrollPane(jList);
         scrollPane.setBackground(Palette.backgroundWhite);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
-        scrollPane.setPreferredSize(new Dimension(900, 500));
+        scrollPane.setPreferredSize(new Dimension(1600,750));
+
+        testList.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         testList.removeAll();
 
@@ -387,11 +442,27 @@ public class ListPanel extends JPanel {
         JScrollPane scrollPane3 = new JScrollPane(jList3);
         scrollPane3.setBackground(Palette.backgroundWhite);
         scrollPane3.setBorder(BorderFactory.createEmptyBorder());
-        scrollPane3.setPreferredSize(new Dimension(900, 600));
+        scrollPane3.setPreferredSize(new Dimension(1600,750));
+
+        testList.setLayout(new FlowLayout(FlowLayout.LEFT));
 
         testList.removeAll();
-        testList.setLayout(new BorderLayout());
         testList.add(scrollPane3, BorderLayout.CENTER);
+
+        jList3.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    int selectedIndex = jList3.getSelectedIndex();
+                    if (selectedIndex != -1) {
+                        Playlist selectedList = listModel3.getElementAt(selectedIndex);
+                        selectedList.print();
+                        PlayerPanel playerPanel = new PlayerPanel(selectedList.getList());
+                        GUIMain.manageList(selectedList.getList());
+                    }
+                }
+            }
+        });
 
         revalidate();
         repaint();

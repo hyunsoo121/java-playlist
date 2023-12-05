@@ -61,6 +61,13 @@ public class HomePanel extends JPanel {
 
         add(sidePane, BorderLayout.WEST);
 
+        JPanel contentPane = new JPanel();
+        contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.X_AXIS));
+        contentPane.setBackground(Palette.backgroundWhite);
+
+        // 여기에 간격을 조절하는 패널 추가
+        contentPane.add(Box.createRigidArea(new Dimension(100, 0))); // 간격 조절
+
         JPanel mainPane = new JPanel(new CardLayout());
         CardLayout cardLayout = (CardLayout) mainPane.getLayout();
 
@@ -99,6 +106,9 @@ public class HomePanel extends JPanel {
                 GUIMain.logout();
             }
         });
-        add(mainPane, BorderLayout.EAST);
+
+        contentPane.add(mainPane);
+
+        add(contentPane, BorderLayout.CENTER);
     }
 }
