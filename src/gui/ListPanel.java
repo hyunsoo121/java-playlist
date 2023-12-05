@@ -13,10 +13,9 @@ import ui_config.Palette;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 public class ListPanel extends JPanel {
@@ -269,9 +268,20 @@ public class ListPanel extends JPanel {
                 tfName.setFont(new Font("LINE Seed Sans KR Regular", Font.PLAIN, 20));
                 tfName.setBorder(BorderFactory.createEmptyBorder());
                 tfName.setPreferredSize(new Dimension(tfName.getPreferredSize().width, 50));
-                buttonPanel2.add(tfName);
+
+
 
                 JRoundedButton rb4 = new JRoundedButton("새 플레이리스트 추가", Palette.backgroundWhite, Palette.primaryBlue);
+
+                tfName.addKeyListener(new KeyAdapter() {
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                            rb4.doClick(); // Simulate a click on the "Add Playlist" button
+                        }
+                    }
+                });
+                buttonPanel2.add(tfName);
                 buttonPanel2.add(rb4);
 
                 add(topPanel3);
@@ -313,6 +323,7 @@ public class ListPanel extends JPanel {
                         }
                     }
                 });
+
                 rb4.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -321,11 +332,13 @@ public class ListPanel extends JPanel {
                         newPlaylist.create(GUIMain.currentUser.getUiTexts()[1], playlistName);
 
                         JOptionPane.showMessageDialog(
-                                ListPanel.this,
+                                ListPanel.this,  // Replace YourParentClass with the actual class where this code resides
                                 "Playlist '" + playlistName + "'가 생성되었습니다!",
                                 "Playlist Creation",
                                 JOptionPane.INFORMATION_MESSAGE
                         );
+
+                        // Update playlist after creation
                         updatePlaylist(testList3);
                     }
                 });

@@ -1,7 +1,9 @@
 package gui;
 
 import mgr.MusicMgr;
+import stream.Album;
 import stream.Music;
+import stream.Playlist;
 import ui_config.JRoundedButton;
 import ui_config.JText;
 import ui_config.Palette;
@@ -13,9 +15,12 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -28,30 +33,29 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 /* 박영호
- * TODO 뒤로가기 액션 추가
- * TODO 재생버튼 이미지 추가하기
- * TODO 하단 버튼 색상 변화 필요?
  * TODO JSlider 디자인?
- * TODO JScrollPane 스크롤 디자인?
  * */
 public class PlayerPanel extends JPanel implements ListSelectionListener {
-    private static final long serialVersionUID = 1L;
+
     JPanel topPane;
     JPanel midPane;
     JPanel botPane;
     JLabel showImg;
     JText musicName;
     JText musicInfo;
-    //    final int IMAGE_WIDTH = 250;
-//    final int IMAGE_HEIGHT = 250;
     JPanel musicList;
     DefaultListModel<Music> listModel;
     int selectedIndex = -1;
 
-
     public PlayerPanel() {
         this(MusicMgr.getInstance().mList);
     }
+
+//	GUIMain guiMain;
+//	public PlayerPanel(ArrayList<Music> mList, GUIMain main) {
+//		this(mList);
+//		guiMain = main;
+//	}
 
     public PlayerPanel(ArrayList<Music> mList) {
         listModel = new DefaultListModel<>();
@@ -70,13 +74,53 @@ public class PlayerPanel extends JPanel implements ListSelectionListener {
         musicChange(selectedIndex);
         musicTimerSetup();
         playMusic();
+        PlayerPanel pp = this;
+        Timer sizeTimer = new Timer(100, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(pp.getWidth() > 1333 && pp.getHeight() > 900) {
+                    setFullScreen();
+                }
+                else {
+                    setSmallScreen();
+                }
+            }
+        });
+        sizeTimer.start();
+    }
+
+    boolean isFullScreen;
+    public void setFullScreen() {
+        isFullScreen = true;
+        blankLeft.setText("　　　　　　　　　　　　　　　　　　　");
+        showImg.setIcon(resizingImage("res/" + jList.getModel().getElementAt(selectedIndex).getInfo(3), 500, 500));
+        //showImg.setPreferredSize(new Dimension(500,500));
+        scrollPane.setPreferredSize(new Dimension(900, 700));
+        scrollPane.revalidate();
+        scrollPane.repaint();
+    }
+    public void setSmallScreen() {
+        isFullScreen = false;
+        blankLeft.setText("　　　　　　　　　　　　　");
+        showImg.setIcon(new ImageIcon("res/" + jList.getModel().getElementAt(selectedIndex).getInfo(3)));
+        scrollPane.setPreferredSize(new Dimension(590, 490));
+        scrollPane.revalidate();
+        scrollPane.repaint();
+    }
+
+    void setMusicImage(String path) {
+        if(isFullScreen)
+            showImg.setIcon(resizingImage(path, 500, 500));
+        else
+            showImg.setIcon(new ImageIcon(path));
     }
 
     /** 배경색, 앨범커버, 음악정보를 갱신함 */
     void musicChange(int index) {
         Music music = jList.getModel().getElementAt(index);
         String imgPath = "res/" + music.getInfo(3);
-        showImg.setIcon(new ImageIcon(imgPath));
+//    	showImg.setIcon(new ImageIcon(imgPath));
+        setMusicImage(imgPath);
         setBackgroundColor(imgPath);
         musicName.setText(music.getInfo(1));
         musicInfo.setText(music.getInfo(5));
@@ -102,7 +146,7 @@ public class PlayerPanel extends JPanel implements ListSelectionListener {
         buttonPane.setBackground(color);
         timeBar.setBackground(color);
         back.setBackground(color);
-
+        playListItemRenderer.setBackground(color);
         Color selectedColor = getSelectedImageColor(imgPath);
         jList.setSelectionBackground(selectedColor);
         if((color.getRed() + color.getGreen() + color.getBlue()) < 300) {
@@ -111,7 +155,7 @@ public class PlayerPanel extends JPanel implements ListSelectionListener {
             musicList.setForeground(Palette.backgroundWhite);
             musicName.setForeground(Palette.backgroundWhite);
             musicInfo.setForeground(Palette.backgroundWhite);
-            setScrollBarUI(color, 1);
+            setScrollBarUI(color, true);
         }
         else {
             back.setForeground(Palette.textBlack);
@@ -120,11 +164,11 @@ public class PlayerPanel extends JPanel implements ListSelectionListener {
             musicList.setForeground(Palette.textBlack);
             musicName.setForeground(Palette.textBlack);
             musicInfo.setForeground(Palette.textBlack);
-            setScrollBarUI(color, 0);
+            setScrollBarUI(color, false);
         }
     }
 
-    void setScrollBarUI(Color color, int type) {
+    void setScrollBarUI(Color color, boolean isBrightBackground) {
         scrollBarUI = new BasicScrollBarUI() {
             @Override
             protected JButton createDecreaseButton(int orientation) {
@@ -145,7 +189,7 @@ public class PlayerPanel extends JPanel implements ListSelectionListener {
             @Override
             protected void configureScrollBarColors() {
                 int nR, nG, nB;
-                if(type == 0) {
+                if(!isBrightBackground) {
                     nR = color.getRed() - 80;
                     nG = color.getGreen() - 80;
                     nB = color.getBlue() - 80;
@@ -215,7 +259,7 @@ public class PlayerPanel extends JPanel implements ListSelectionListener {
         back = new JRoundedButton("뒤로가기");
         back.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                GUIMain.backToHome();
+                ((CardLayout)GUIMain.mainPanel.getLayout()).show(GUIMain.mainPanel, "home");
             }
         });
         back.addMouseListener(new BackButtonMouseListener());
@@ -231,13 +275,15 @@ public class PlayerPanel extends JPanel implements ListSelectionListener {
     JPanel midMusicInfo;
     PlayListItemRenderer playListItemRenderer;
     BasicScrollBarUI scrollBarUI;
+    JLabel blankLeft;
+    JLabel blankRight;
     void setMidPane() {
         midPane = new JPanel();
         GridLayout midGrid = new GridLayout(1, 2);
         midPane.setLayout(midGrid);
 
-        JLabel blankLeft = new JLabel("　　　　　　　　　　　　　");
-        JLabel blankRight = new JLabel("　　　　　　　　　　　　　");
+        blankLeft = new JLabel("　　　　　　　　　　　　　");
+        blankRight = new JLabel("　　　　　　　　　　　　　");
         lPane = new JPanel(new BorderLayout());
 
         /* 좌측 패널 셋업*/
@@ -266,17 +312,14 @@ public class PlayerPanel extends JPanel implements ListSelectionListener {
 
         /* 우측 패널 셋업 */
         musicList = new JPanel();
-        musicList.setBackground(Palette.backgroundWhiteAlt);
         jList = new JList<>(listModel);
         jList.addListSelectionListener(this);
         //jList.setCellRenderer(new ItemRenderer());
         playListItemRenderer = new PlayListItemRenderer();
         jList.setCellRenderer(playListItemRenderer);
         jList.setBorder(BorderFactory.createEmptyBorder());
-        jList.setBackground(Palette.backgroundWhite);
 
         scrollPane = new JScrollPane(jList);
-        scrollPane.setBackground(Palette.backgroundWhiteAlt);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
         scrollPane.setPreferredSize(new Dimension(590, 490));
         scrollBarUI = new BasicScrollBarUI() {
@@ -284,16 +327,16 @@ public class PlayerPanel extends JPanel implements ListSelectionListener {
             protected JButton createDecreaseButton(int orientation) {
                 JRoundedButton button = new JRoundedButton("▼");
                 button.setPreferredSize(new Dimension(0, 0));
-                button.setMinimumSize(new Dimension(5, 5));
-                button.setMaximumSize(new Dimension(5, 5));
+                button.setMinimumSize(new Dimension(0, 0));
+                button.setMaximumSize(new Dimension(0, 0));
                 return button;
             }
             @Override
             protected JButton createIncreaseButton(int orientation) {
                 JRoundedButton button = new JRoundedButton("▲");
                 button.setPreferredSize(new Dimension(0, 0));
-                button.setMinimumSize(new Dimension(5, 5));
-                button.setMaximumSize(new Dimension(5, 5));
+                button.setMinimumSize(new Dimension(0, 0));
+                button.setMaximumSize(new Dimension(0, 0));
                 return button;
             }
             @Override
@@ -304,7 +347,6 @@ public class PlayerPanel extends JPanel implements ListSelectionListener {
         };
         scrollPane.getVerticalScrollBar().setUI(scrollBarUI);
         musicList.add(scrollPane, BorderLayout.CENTER);
-
         midPane.add(lPane);
         midPane.add(musicList);
     }
@@ -312,8 +354,6 @@ public class PlayerPanel extends JPanel implements ListSelectionListener {
     JPanel timeLinePane;
     JPanel buttonPane;
     JSlider timeBar;
-    //	JLabel blank1;
-//	JLabel blank2;
     JLabel center;
     void setBotPane() {
         timeLinePane = new JPanel();
@@ -391,7 +431,7 @@ public class PlayerPanel extends JPanel implements ListSelectionListener {
         if(timer.isRunning()) {
             System.out.println("정지");
             // TODO 재생 아이콘 추가해서 이미지 경로 수정 필요
-            center.setIcon(resizingImage("res/002.jpg", 100, 100));
+            center.setIcon(resizingImage("res/007.png", 100, 100));
             stopMusic();
         }
         else {
@@ -426,13 +466,32 @@ public class PlayerPanel extends JPanel implements ListSelectionListener {
     }
 
     @SuppressWarnings("serial")
-    class PlayListItemRenderer extends ItemRenderer {
+    class PlayListItemRenderer<T> extends ItemRenderer<T> {
         public PlayListItemRenderer() {
             super();
         }
         public void setTextColor(Color color) {
             titleLabel.setForeground(color);
             infoLabel.setForeground(color);
+        }
+        @Override
+        public Component getListCellRendererComponent(JList<? extends T> list, T item, int index, boolean isSelected, boolean cellHasFocus) {
+            Music music = (Music)item;
+            ImageIcon imageIcon = new ImageIcon("res/" + music.getImagePath());
+            Image image = imageIcon.getImage();
+            Image scaledImage = image.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
+            ImageIcon scaledImageIcon = new ImageIcon(scaledImage);
+            titleLabel.setText(music.getInfo(1));
+            infoLabel.setText(music.getInfo(5) + " · " + music.getInfo(6));
+            imageLabel.setIcon(scaledImageIcon);
+            if (isSelected) {
+                itemPanel.setBackground(list.getSelectionBackground());
+                itemPanel.setForeground(list.getSelectionForeground());
+            } else {
+                itemPanel.setBackground(list.getBackground());
+                itemPanel.setForeground(list.getForeground());
+            }
+            return this;
         }
     }
 

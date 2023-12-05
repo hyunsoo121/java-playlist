@@ -33,6 +33,8 @@ public class LoginPanel extends JPanel {
         setDisplay_logo();
         setDisplay_login();
         setDisplay_join();
+        cardPanel.setBounds(788, 400, pnlJoin.getPreferredSize().width, pnlJoin.getPreferredSize().height);
+        add(cardPanel);
     }
 
     public void setDisplay_logo(){
@@ -41,12 +43,12 @@ public class LoginPanel extends JPanel {
         ImageIcon changeIcon = new ImageIcon((img));
         JLabel lbl = new JLabel(changeIcon);
         setLayout(null);
-        lbl.setBounds(665, 200, 250, 100);
+        lbl.setBounds(838, 240, 250, 100);
         add(lbl);
 
         //설명 추가
         JText lblexplain = new JText("소개 문구", 700, 30);
-        lblexplain.setBounds(720, 260,250,100);
+        lblexplain.setBounds(893, 310,250,100);
         add(lblexplain);
     }
 

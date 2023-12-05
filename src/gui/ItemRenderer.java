@@ -9,8 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 
 class ItemRenderer<T> extends JPanel implements ListCellRenderer<T> {
-    private JPanel itemPanel;
-    private final JLabel imageLabel;
+    protected JPanel itemPanel;
+    protected final JLabel imageLabel;
     protected final JText titleLabel;
     protected final JText infoLabel;
 

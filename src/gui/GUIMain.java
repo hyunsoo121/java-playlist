@@ -26,7 +26,8 @@ public class GUIMain {
     private static void createAndShowGUI() {
         JFrame frame = new JFrame("음악 스트리밍 Colon");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1200, 800);
+        frame.setSize(1500, 800);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
 
 
@@ -49,8 +50,10 @@ public class GUIMain {
         });
         frame.addMouseMotionListener(new MouseAdapter() {
             public void mouseDragged(MouseEvent e) {
-                Point point = e.getLocationOnScreen();
-                frame.setLocation(point.x - draggable.x, point.y - draggable.y);
+                if (draggable != null) {
+                    Point point = e.getLocationOnScreen();
+                    frame.setLocation(point.x - draggable.x, point.y - draggable.y);
+                }
             }
         });
         frame.add(mainPanel);
