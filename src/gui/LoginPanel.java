@@ -21,8 +21,6 @@ public class LoginPanel extends JPanel {
     JPanel pnlJoin;
     JPanel pnlLogin;
 
-    Dimension lblSize1 = new Dimension(28, 30);
-    Dimension lblSize2 = new Dimension(33, 30);
     int tfSize = 18;
     Dimension btnSize = new Dimension(100, 25);
 
@@ -131,16 +129,12 @@ public class LoginPanel extends JPanel {
 
         FlowLayout flowLeft = new FlowLayout(FlowLayout.LEFT,0,0);
 
-        //pnlLogin.setBackground(Palette.primaryGray);
-
         JPanel pnlId = new JPanel(flowLeft);
         pnlId.setBackground(Palette.backgroundWhiteAlt);
-        //pnlId.add(lblId);
         pnlId.add(tfId);
 
         JPanel pnlPhoneNum = new JPanel(flowLeft);
         pnlPhoneNum.setBackground(Palette.backgroundWhiteAlt);
-        //pnlPhoneNum.add(lblPhoneNum);
         pnlPhoneNum.add(tfPhoneNum);
 
         JPanel pnlGap = new JPanel();
@@ -154,7 +148,6 @@ public class LoginPanel extends JPanel {
         pnlLogin.add(pnlGap);
 
         cardPanel.add("pnlLogin",pnlLogin);//레이아웃에 넣어주기
-        //cardPanel.setBounds(550,350,pnlLogin.getPreferredSize().width,pnlLogin.getPreferredSize().height);
         cardLayout.show(cardPanel, "pnlLogin");//카드레이아웃 보여주기
         add(cardPanel);
 
@@ -327,17 +320,14 @@ public class LoginPanel extends JPanel {
 
         JPanel pnlId = new JPanel(flowLeft);
         pnlId.setBackground(Palette.backgroundWhiteAlt);
-        //pnlId.add(lblId);
         pnlId.add(tfId);
 
         JPanel pnlPhoneNum = new JPanel(flowLeft);
         pnlPhoneNum.setBackground(Palette.backgroundWhiteAlt);
-        //pnlPhoneNum.add(lblPhoneNum);
         pnlPhoneNum.add(tfPhoneNum);
 
         JPanel pnlName = new JPanel(flowLeft);
         pnlPhoneNum.setBackground(Palette.backgroundWhiteAlt);
-        //pnlPhoneNum.add(lblPhoneNum);
         pnlName.add(tfName);
 
         pnlJoin = new JPanel(new GridLayout(0, 1, 0, 10));
